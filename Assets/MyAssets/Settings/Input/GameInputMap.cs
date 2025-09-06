@@ -94,25 +94,47 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""SelectUnit"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""e63105ab-e95a-41b4-bd20-b04a5b54cc69"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""0ead7d91-b0ed-4ad1-94a9-8cde9e851b60"",
+                    ""name"": ""One Modifier"",
+                    ""id"": ""4e568573-5a9d-49c5-b155-ee5c9b4eea72"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectUnit"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""b1a2e6cd-cb3b-485f-934c-5f45a3bd9c52"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";PC"",
                     ""action"": ""SelectUnit"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""2693b581-c3e3-4e6b-b24e-924be1f348ba"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""SelectUnit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
