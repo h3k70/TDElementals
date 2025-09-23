@@ -199,6 +199,7 @@ public class Game : NetworkBehaviour
             path.Select(false);
 
         _gameplayUI.UnitPanelUI.SelectedCharacterCard -= OnSelectedCharacterCard;
+        _ownerBase.BattlePointsChanged -= OnBattlePointsChanged;
         _gameplayUI.ResetAll();
     }
 }
