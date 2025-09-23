@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 public class Base : NetworkBehaviour, IDamageable, ISelectable
@@ -26,6 +27,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private Path _currentPath;
     private float _spawnOffset = 1;
     private Coroutine _regenBattlePointsJob;
+    private Coroutine _autoSpawnUnitJob;
 
     public Sprite Icon => _icon;
     public GameObject Self => gameObject;
@@ -55,8 +57,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         if (isOwned)
         {
             SelectLeftPath();
+            SelectedForSpawnUnit = _charactersPrefabs[0];
 
             _regenBattlePointsJob = StartCoroutine(RegenBattlePointsJob());
+            _autoSpawnUnitJob = StartCoroutine(AutoSpawnUnitJob());
         }
     }
 
@@ -119,6 +123,17 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         return false;
     }
 
+    private void SpawnUnit(int index)
+    {
+        Vector3 spawnPoint = new Vector3(Random.Range(-_spawnOffset, _spawnOffset), 0, Random.Range(-_spawnOffset, _spawnOffset)) + transform.position;
+
+        Character character = Instantiate(_charactersPrefabs[index], spawnPoint, transform.rotation).GetComponent<Character>();
+        _characters.Add(character);
+        NetworkServer.Spawn(character.gameObject, gameObject);
+
+        Game.Instance.RpcMarkLayerObj(character);
+    }
+
     private IEnumerator RegenBattlePointsJob()
     {
         var time = new WaitForSeconds(_battlePointsTakeRate);
@@ -130,15 +145,16 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         }
     }
 
-    private void SpawnUnit(int index)
+    private IEnumerator AutoSpawnUnitJob()
     {
-        Vector3 spawnPoint = new Vector3(Random.Range(-_spawnOffset, _spawnOffset), 0, Random.Range(-_spawnOffset, _spawnOffset)) + transform.position;
+        var time = new WaitForSeconds(_spawnUnitDeley);
 
-        Character character = Instantiate(_charactersPrefabs[index], spawnPoint, transform.rotation).GetComponent<Character>();
-        _characters.Add(character);
-        NetworkServer.Spawn(character.gameObject, gameObject);
-
-        Game.Instance.RpcMarkLayerObj(character);
+        while (true)
+        {
+            yield return time;
+            int index = _charactersPrefabs.FindIndex(item => item == _selectedForSpawnUnit);
+            CmdSpawnUnit(index);
+        }
     }
 
     [Command]
