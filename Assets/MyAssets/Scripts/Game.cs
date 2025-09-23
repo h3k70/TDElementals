@@ -90,6 +90,8 @@ public class Game : NetworkBehaviour
 
         _gameplayUI.SwichLeftPathButton.onClick.AddListener(OnSwichLeftPath);
         _gameplayUI.SwichRightPathButton.onClick.AddListener(OnSwichRightPath);
+
+        _ownerBase.BattlePointsChanged += OnBattlePointsChanged;
     }
 
     private Base CreateBase(NetworkConnectionToClient playerConn, Transform spawnPoint, List<Path> paths)
@@ -174,6 +176,11 @@ public class Game : NetworkBehaviour
     private void OnSwichLeftPath()
     {
         _ownerBase.SelectLeftPath();
+    }
+
+    private void OnBattlePointsChanged(float arg1, float arg2)
+    {
+        _gameplayUI.OnBattlePointsChanged(arg1, arg2);
     }
 
     [ClientRpc]

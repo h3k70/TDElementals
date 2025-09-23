@@ -12,6 +12,9 @@ public class PopText : MonoBehaviour
 
     public void Show(string text)
     {
+        if (gameObject.activeInHierarchy == false)
+            return;
+
         _text.text = text;
 
         if (_showJob != null)

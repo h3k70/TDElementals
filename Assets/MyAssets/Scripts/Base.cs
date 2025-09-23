@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
@@ -10,9 +11,9 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SerializeField] private Elements _element;
     [SerializeField] private List<Character> _charactersPrefabs = new List<Character>();
 
-    [SyncVar] private float _health = 20;
+    [SyncVar] private float _health = 50;
     [SyncVar] private bool _isDead;
-    [SyncVar] private float _battlePoints = 50;
+    [SyncVar] private float _battlePoints = 0;
 
     private float _battlePointsTakeRate = 1;
     private float _battlePointsTakeNum = 1;
@@ -23,6 +24,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private Path _rightpath;
     private Path _currentPath;
     private float _spawnOffset = 1;
+    private Coroutine _regenBattlePointsJob;
 
     public Sprite Icon => _icon;
     public GameObject Self => gameObject;
@@ -42,6 +44,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
     public event Action<float, float> HPChanged;
+    public event Action<float, float> BattlePointsChanged;
 
     public void Init(List<Path> paths)
     {
@@ -51,6 +54,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         if (isOwned)
         {
             SelectLeftPath();
+
+            _regenBattlePointsJob = StartCoroutine(RegenBattlePointsJob());
         }
     }
 
@@ -106,17 +111,25 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     {
         if (character.Cost <= _battlePoints)
         {
-            _battlePoints -= character.Cost;
-
             int index = _charactersPrefabs.FindIndex(item => item == character);
-            CmdSpawn(index);
+            CmdTrySpawnUnit(index, character.Cost);
             return true;
         }
         return false;
     }
 
-    [Command]
-    private void CmdSpawn(int index)
+    private IEnumerator RegenBattlePointsJob()
+    {
+        var time = new WaitForSeconds(_battlePointsTakeRate);
+
+        while (true)
+        {
+            yield return time;
+            CmdAddBattlePoints();
+        }
+    }
+
+    private void SpawnUnit(int index)
     {
         Vector3 spawnPoint = new Vector3(Random.Range(-_spawnOffset, _spawnOffset), 0, Random.Range(-_spawnOffset, _spawnOffset)) + transform.position;
 
@@ -125,6 +138,33 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         NetworkServer.Spawn(character.gameObject, gameObject);
 
         Game.Instance.RpcMarkLayerObj(character);
+    }
+
+    [Command]
+    private void CmdAddBattlePoints()
+    {
+        float newValue = _battlePoints + _battlePointsTakeNum;
+
+        BattlePointsChanged?.Invoke(_battlePoints, newValue);
+        RpcBattlePointsChanged(_battlePoints, newValue);
+        _battlePoints = newValue;
+    }
+
+    [Command]
+    private void CmdTrySpawnUnit(int index, float cost)
+    {
+        if (cost <= _battlePoints)
+        {
+            _battlePoints -= cost;
+
+            SpawnUnit(index);
+        }
+    }
+
+    [Command]
+    private void CmdSpawnUnit(int index)
+    {
+        SpawnUnit(index);
     }
 
     [ClientRpc]
@@ -137,5 +177,11 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private void RpcHPChanged(float oldValue, float newValue)
     {
         HPChanged?.Invoke(oldValue, newValue);
+    }
+
+    [ClientRpc]
+    private void RpcBattlePointsChanged(float oldValue, float newValue)
+    {
+        BattlePointsChanged?.Invoke(oldValue, newValue);
     }
 }
