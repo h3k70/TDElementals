@@ -10,6 +10,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SerializeField] private Sprite _icon;
     [SerializeField] private Elements _element;
     [SerializeField] private List<Character> _charactersPrefabs = new List<Character>();
+    [SerializeField] private Collider _selectCollider;
 
     [SyncVar] private float _health = 50;
     [SyncVar] private bool _isDead;

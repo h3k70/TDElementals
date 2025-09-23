@@ -16,6 +16,8 @@ public class CharacterStateMachine : IStateSwitcher
         {
             new StandartAttackState(character, this),
             new AttackBaseBuildState(character),
+            new DefenceState(character, this),
+            new PushBaseSatate(character, this),
         };
 
         _currentState = _states[0];

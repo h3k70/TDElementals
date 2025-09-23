@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class Selector
@@ -11,7 +12,7 @@ public class Selector
     private Camera _camera;
     private GameInputMap _input;
     private float _rayDistance = 9999;
-    private int _layerMask = LayerMask.GetMask("Ally"); //Ally and Enemy = 384
+    private int _layerMask = Layers.AllyMask;
 
     public List<ISelectable> AllSelectablsUnit { get => _allSelectablsUnit; set => _allSelectablsUnit = value; }
 
@@ -29,6 +30,9 @@ public class Selector
 
     private void OnSelectUnit(InputAction.CallbackContext context)
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         Ray ray = _camera.ScreenPointToRay(context.ReadValue<Vector2>());
 
         foreach (var item in _currentSelectablsUnit)

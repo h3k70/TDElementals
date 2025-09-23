@@ -48,7 +48,7 @@ public class PathMover
 
     public void Update()
     {
-        if (_path == null && _isReachEndPoint == false)
+        if (_path == null || _isReachEndPoint)
             return;
 
         _transform.LookAt(_targetPosition);
@@ -60,8 +60,8 @@ public class PathMover
 
             if (_targetPointTransform == null)
             {
-                ReachedEndPoint?.Invoke();
                 _isReachEndPoint = true;
+                ReachedEndPoint?.Invoke();
                 return;
             }
             ConculateTargetPointWithOffset();

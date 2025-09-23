@@ -15,6 +15,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SerializeField] private Elements _element;
     [SerializeField] private Animator _animator;
     [SerializeField] private NetworkAnimator _netAnimator;
+    [SerializeField] private Collider _selectCollider;
 
     private float _nextAttackTime = 0f;
     private IEnemyChecker _enemyChecker;
@@ -101,11 +102,34 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _path = path;
     }
 
+    public void SetMode(UnitCommands mode)
+    {
+        switch (mode)
+        {
+            case UnitCommands.MoveAndAttak:
+                _stateMachine.SwitchState<StandartAttackState>();
+                break;
+
+            case UnitCommands.PushBase:
+                _stateMachine.SwitchState<PushBaseSatate>();
+                break;
+
+            case UnitCommands.Defense:
+                _stateMachine.SwitchState<DefenceState>();
+                break;
+
+            default:
+                break;
+        }
+    }
+
     public bool TryAttack(IDamageable target)
     {
         if (Time.time > _nextAttackTime)
         {
             _nextAttackTime = Time.time + _attackRate;
+
+            transform.LookAt(target.Self.transform.position);
             _animator.SetTrigger("Slice Attack");
             _netAnimator.SetTrigger("Slice Attack");
             DealDamage(target.Self);
@@ -145,5 +169,6 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         Died?.Invoke(damage);
         _animator.SetTrigger("Die");
         _netAnimator.SetTrigger("Die");
+        _selectCollider.enabled = false;
     }
 }

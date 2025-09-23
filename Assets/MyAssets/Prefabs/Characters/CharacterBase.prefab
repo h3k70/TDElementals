@@ -247,6 +247,7 @@ MonoBehaviour:
   _element: 0
   _animator: {fileID: 3942999045789797706}
   _netAnimator: {fileID: 5375835532913073868}
+  _selectCollider: {fileID: 3168510300479189456}
 --- !u!135 &3168510300479189456
 SphereCollider:
   m_ObjectHideFlags: 0
