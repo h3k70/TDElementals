@@ -4,10 +4,13 @@ using UnityEngine;
 public interface IDamageable
 {
     public Sprite Icon { get; }
-    public Damage TempDamage {  get; set; }
+    public GameObject Self { get; }
+    public float TempDamageValue {  get; set; }
+    public bool IsCanTakeDamage { get; }
+    public Elements Element { get; }
 
-    public Action<IDamageable> BeforDamageTaked { get; set; }
-    public Action<IDamageable> DamageTaked { get; set; }
+    public event Action<IDamageable> BeforDamageTaked;
+    public event Action<IDamageable, float> DamageTaked;
 
-    public void TakeDamage(float damage);
+    public void TakeDamage(Damage damage);
 }

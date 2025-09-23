@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,7 +11,12 @@ public class Selector
     private Camera _camera;
     private GameInputMap _input;
     private float _rayDistance = 9999;
-    private int _layerMask = 384; //Ally and Enemy
+    private int _layerMask = LayerMask.GetMask("Ally"); //Ally and Enemy = 384
+
+    public List<ISelectable> AllSelectablsUnit { get => _allSelectablsUnit; set => _allSelectablsUnit = value; }
+
+    public event Action<ISelectable> Selected;
+    public event Action<ISelectable> Deselected;
 
     public Selector(GameInputMap inputActions)
     {
@@ -29,6 +35,8 @@ public class Selector
         {
             item.Deselect();
             _tempForDeleteSelectablsUnit.Add(item);
+
+            Deselected?.Invoke(item);
         }
         foreach (var item in _tempForDeleteSelectablsUnit)
         {
@@ -39,6 +47,8 @@ public class Selector
         {
             unit.Select();
             _currentSelectablsUnit.Add(unit);
+
+            Selected?.Invoke(unit);
         }
     }
 }

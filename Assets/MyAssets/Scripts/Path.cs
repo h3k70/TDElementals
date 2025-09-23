@@ -1,9 +1,15 @@
+using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Center.Common;
 using UnityEngine;
 
 public class Path : MonoBehaviour
 {
     [SerializeField] private List<Transform> _points = new();
+
+    public List<Transform> Points { get => _points; }
+
+    public event Action<bool> Selected;
 
     public Transform GetCloserPoint(Vector3 position)
     {
@@ -32,6 +38,11 @@ public class Path : MonoBehaviour
             return _points[currentIndex + 1];
         else
             return null;
+    }
+
+    public void Select(bool value)
+    {
+        Selected?.Invoke(value);
     }
 
     [ContextMenu(nameof(Flip))]
