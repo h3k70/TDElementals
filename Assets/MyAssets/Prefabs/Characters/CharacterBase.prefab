@@ -195,6 +195,8 @@ GameObject:
   - component: {fileID: 7661899267297425571}
   - component: {fileID: 8817929096828198055}
   - component: {fileID: 7329960171176504387}
+  - component: {fileID: 3942999045789797706}
+  - component: {fileID: 5375835532913073868}
   m_Layer: 8
   m_Name: CharacterBase
   m_TagString: Untagged
@@ -239,10 +241,12 @@ MonoBehaviour:
   _health: 4
   _icon: {fileID: 21300000, guid: caa516cdb721dd143bbc8000ca78d50a, type: 3}
   _moveSpeed: 0.8
-  _attackRate: 1
+  _attackRate: 1.2
   _damage: 1
   _cost: 5
   _element: 0
+  _animator: {fileID: 3942999045789797706}
+  _netAnimator: {fileID: 5375835532913073868}
 --- !u!135 &3168510300479189456
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -342,6 +346,45 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &3942999045789797706
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455940782852663380}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5375835532913073868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455940782852663380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkAnimator
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 1
+  animator: {fileID: 3942999045789797706}
 --- !u!1 &6967630280453102686
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +437,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3
+  m_Radius: 2.28
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8317944451974441500
 MonoBehaviour:

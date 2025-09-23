@@ -47,6 +47,11 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     {
         _leftPath = paths[0];
         _rightpath = paths[1];
+
+        if (isOwned)
+        {
+            SelectLeftPath();
+        }
     }
 
     public void SelectLeftPath()

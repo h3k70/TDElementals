@@ -20,6 +20,7 @@ public class CharacterSubUI : MonoBehaviour
         _disposabls.Add(_selectCircleDisplay);
 
         _character.DamageTaked += OnDamageTaked;
+        _character.Died += OnDied;
 
         _hpBar.Init(_character);
     }
@@ -29,8 +30,20 @@ public class CharacterSubUI : MonoBehaviour
         transform.LookAt(Camera.main.transform.position);
     }
 
+    private void OnDestroy()
+    {
+        _character.DamageTaked -= OnDamageTaked;
+        _character.Died -= OnDied;
+    }
+
     private void OnDamageTaked(IDamageable damageable, float damage)
     {
         _popText.Show("-" + damage);
     }
+
+    private void OnDied(Damage damage)
+    {
+        gameObject.SetActive(false);
+    }
+
 }

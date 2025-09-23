@@ -13,6 +13,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SerializeField] private float _damage = 1f;
     [SerializeField] private float _cost = 5;
     [SerializeField] private Elements _element;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private NetworkAnimator _netAnimator;
 
     private float _nextAttackTime = 0f;
     private IEnemyChecker _enemyChecker;
@@ -82,11 +84,12 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         {
             Health -= TempDamageValue;
 
-            if (Health < 0)
+            if (Health <= 0)
             {
                 _isDead = true;
                 Health = 0;
                 Died?.Invoke(damage);
+                RpcDied(damage.Value, damage.Damageable.Self, damage.DamageDealer.Self);
             }
             DamageTaked?.Invoke(this, damage.Value);
             RpcDamageTaked(damage.Value);
@@ -103,6 +106,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         if (Time.time > _nextAttackTime)
         {
             _nextAttackTime = Time.time + _attackRate;
+            _animator.SetTrigger("Slice Attack");
+            _netAnimator.SetTrigger("Slice Attack");
             DealDamage(target.Self);
             return true;
         }
@@ -125,5 +130,20 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private void RpcHPChanged(float oldValue, float newValue)
     {
         HPChanged?.Invoke(oldValue, newValue);
+    }
+
+    [ClientRpc]
+    private void RpcDied(float value, GameObject damageable, GameObject damageDealer)
+    {
+        Damage damage = new()
+        {
+            Value = value,
+            Damageable = damageable.GetComponent<IDamageable>(),
+            DamageDealer = damageDealer.GetComponent<IDamageDealer>(),
+        };
+
+        Died?.Invoke(damage);
+        _animator.SetTrigger("Die");
+        _netAnimator.SetTrigger("Die");
     }
 }
