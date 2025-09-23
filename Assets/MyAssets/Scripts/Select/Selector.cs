@@ -37,10 +37,13 @@ public class Selector
 
         foreach (var item in _currentSelectablsUnit)
         {
-            item.Deselect();
-            _tempForDeleteSelectablsUnit.Add(item);
+            if (item != null)
+            {
+                item.Deselect();
+                Deselected?.Invoke(item);
+            }
 
-            Deselected?.Invoke(item);
+            _tempForDeleteSelectablsUnit.Add(item);
         }
         foreach (var item in _tempForDeleteSelectablsUnit)
         {
