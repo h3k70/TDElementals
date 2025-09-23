@@ -17,6 +17,15 @@ public class BarUI : MonoBehaviour
         character.HPChanged += OnValueChanged;
     }
 
+    public void Init(Base character)
+    {
+        _maxValue = character.Health;
+
+        OnValueChanged(_maxValue, _maxValue);
+
+        character.HPChanged += OnValueChanged;
+    }
+
     private void OnDestroy()
     {
         
