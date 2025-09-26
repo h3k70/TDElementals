@@ -32,6 +32,9 @@ public class CharacterSubUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        foreach (var item in _disposabls)
+            item.Dispose();
+
         _character.DamageTaked -= OnDamageTaked;
         _character.Died -= OnDied;
     }
