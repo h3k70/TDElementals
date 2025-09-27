@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
 public class StandartAttackState : IState
@@ -8,7 +9,7 @@ public class StandartAttackState : IState
     private Character _character;
     private IStateSwitcher _stateMachine;
     private Path _path;
-    private PathMover _mover;
+    private AgentMover _mover;
     private List<Character> _enemies;
     private float _offset = 1.5f;
 
@@ -17,14 +18,14 @@ public class StandartAttackState : IState
         _character = character;
         _path = character.Path;
         _enemies = character.EnemyChecker.Enemies;
-        _mover = new(character.transform, character.MoveSpeed, character.Path, _offset);
+        _mover = new AgentMover(character.GetComponent<NavMeshAgent>(), character.MoveSpeed, character.Path);
         _stateMachine = stateMachine;
     }
 
     public void Enter()
     {
         _path = _character.Path;
-        _mover.SetPath(_path);
+        //_mover.SetPath(_path);
         _mover.ReachedEndPoint += OnReachedEndPoint;
     }
 
@@ -37,12 +38,15 @@ public class StandartAttackState : IState
     {
         foreach(Character enemy in _enemies)
         {
+            _mover.Pause();
+
             if (enemy.IsCanTakeDamage)
             {
                 _character.TryAttack(enemy);
                 return;
             }
         }
+        _mover.Resume();
         _mover.Update();
     }
 

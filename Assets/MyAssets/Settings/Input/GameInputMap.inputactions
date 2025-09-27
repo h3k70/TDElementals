@@ -51,15 +51,37 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "5ed80330-ef3e-4c0b-bc3b-3b30d1c85bdc",
+                    "name": "One Modifier",
+                    "id": "aaa54d56-bf2c-46fe-88f7-991b61a49896",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectUnit",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "7eac7627-e587-4722-b56d-211dba461ca9",
                     "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Phone",
                     "action": "SelectUnit",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "15793872-16ee-498b-bb7f-c7e0fed42cdf",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Phone",
+                    "action": "SelectUnit",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

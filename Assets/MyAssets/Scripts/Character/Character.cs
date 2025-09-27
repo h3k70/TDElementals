@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer
 {
@@ -170,5 +171,6 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _animator.SetTrigger("Die");
         _netAnimator.SetTrigger("Die");
         _selectCollider.enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
     }
 }

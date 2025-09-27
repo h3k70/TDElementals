@@ -14,7 +14,7 @@ public class PushBaseSatate : IState
     {
         _character = character;
         _path = character.Path;
-        _mover = new(character.transform, character.MoveSpeed, character.Path, _offset);
+        _mover = new PathMover(character.transform, character.MoveSpeed, character.Path, _offset);
         _stateMachine = stateMachine;
     }
 
