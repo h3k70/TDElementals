@@ -17,6 +17,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SyncVar] private bool _isDead;
     [SyncVar] private float _battlePoints = 0;
 
+    private Dictionary<Character, int> _CharactersLVL = new Dictionary<Character, int>();
     private float _battlePointsTakeRate = 1;
     private float _battlePointsTakeNum = 1;
     private float _spawnUnitDeley = 10;
