@@ -38,7 +38,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _moveSpeed
-      value: 1.5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _attackRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3942999045789797706, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: m_Avatar

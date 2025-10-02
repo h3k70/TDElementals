@@ -18,16 +18,19 @@ public class CharacterCardUI : MonoBehaviour
     [SerializeField] private Button _button;
 
     private Character _character;
+    private Character _characterPref;
 
     public Character Character { get => _character; }
+    public Character CharacterPref { get => _characterPref; }
 
     public event Action<CharacterCardUI> CharacterCardSelected;
 
-    public void Init(Character character)
+    public void Init(Character character, Character characterPref)
     {
         _button.onClick.AddListener(OnClick);
 
         _character = character;
+        _characterPref = characterPref;
 
         _icon.sprite = _character.Icon;
 

@@ -12,12 +12,12 @@ public class SelectUnitPanelUI : MonoBehaviour
 
     public event Action<CharacterCardUI> SelectedCharacterCard;
 
-    public void Init(List<Character> characters)
+    public void Init(List<Character> charactersForCard, List<Character> charactersPref)
     {
-        foreach (Character character in characters)
+        for (int i = 0; i < charactersForCard.Count; i++)
         {
             var card = Instantiate(_characterCardUIPref, transform);
-            card.Init(character);
+            card.Init(charactersForCard[i], charactersPref[i]);
             _characterCards.Add(card);
 
             card.CharacterCardSelected += OnCharacterCardSelected;
@@ -37,6 +37,7 @@ public class SelectUnitPanelUI : MonoBehaviour
             card.CharacterCardSelected -= OnCharacterCardSelected;
             Destroy(card.gameObject);
         }
+        _characterCards.Clear();
     }
 
     private void OnCharacterCardSelected(CharacterCardUI card)

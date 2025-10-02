@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -64,7 +65,9 @@ public class Game : NetworkBehaviour
     private void StartGame()
     {
         _base1 = CreateBase(player1, _baseSpawnPoint1, _paths1);
+        CreateUnitsForCard(_base1);
         _base2 = CreateBase(player2, _baseSpawnPoint2, _paths2);
+        CreateUnitsForCard(_base2);
 
         RpcStartGame(_base1.gameObject, _base2.gameObject);
 
@@ -85,7 +88,7 @@ public class Game : NetworkBehaviour
         SetCameraPositionBehindOwnedBase();
         SetOwnerBase();
 
-        _gameplayUI.UnitPanelUI.Init(_ownerBase.CharactersPrefabs);
+        _gameplayUI.UnitPanelUI.Init(_ownerBase.CharactersForCards, _ownerBase.CharactersPrefabs);
         _gameplayUI.UnitPanelUI.SelectedCharacterCard += OnSelectedCharacterCard;
 
         _gameplayUI.SwichLeftPathButton.onClick.AddListener(OnSwichLeftPath);
@@ -100,6 +103,18 @@ public class Game : NetworkBehaviour
         tempBase.Init(paths);
         NetworkServer.Spawn(tempBase.gameObject, playerConn);
         return tempBase;
+    }
+
+    private void CreateUnitsForCard(Base base1)
+    {
+        foreach (var prefab in base1.CharactersPrefabs)
+        {
+            var unit = Instantiate(prefab, new Vector3(999,999,999), Quaternion.identity);
+            unit.gameObject.SetActive(false);
+            NetworkServer.Spawn(unit.gameObject, base1.gameObject);
+            base1.CharactersForCards.Add(unit);
+            RpcCharactersForCardsAdd(unit.gameObject, base1.gameObject);
+        }
     }
 
     private void MarkLayerObj(NetworkBehaviour obj)
@@ -128,12 +143,12 @@ public class Game : NetworkBehaviour
 
     private void OnSelectedCharacterCard(CharacterCardUI card)
     {
-        if (_ownerBase.SelectedForSpawnUnit == card.Character)
+        if (_ownerBase.SelectedForSpawnUnit == card.CharacterPref)
         {
             _ownerBase.TrySpawnUnit(_ownerBase.SelectedForSpawnUnit);
         }
 
-        _ownerBase.SelectedForSpawnUnit = card.Character;
+        _ownerBase.SelectedForSpawnUnit = card.CharacterPref;
     }
 
     private void OnBaseDestroed()
@@ -201,5 +216,12 @@ public class Game : NetworkBehaviour
         _gameplayUI.UnitPanelUI.SelectedCharacterCard -= OnSelectedCharacterCard;
         _ownerBase.BattlePointsChanged -= OnBattlePointsChanged;
         _gameplayUI.ResetAll();
+    }
+
+    [ClientRpc]
+    private void RpcCharactersForCardsAdd(GameObject character, GameObject base1)
+    {
+        base1.GetComponent<Base>().CharactersForCards.Add(character.GetComponent<Character>());
+        character.gameObject.SetActive(false);
     }
 }

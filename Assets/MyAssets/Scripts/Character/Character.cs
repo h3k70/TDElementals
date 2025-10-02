@@ -4,20 +4,26 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer
+public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer, IHaveLVL
 {
+    [SyncVar] private int _lvl = 0;
+    [SyncVar] private float _currentExp = 0;
+    [SyncVar] private float _expForNextLvl = 0;
     [SyncVar] private bool _isDead;
     [SyncVar, SerializeField] private float _health = 4;
     [SerializeField] private Sprite _icon;
-    [SerializeField] private float _moveSpeed = 0.8f;
-    [SerializeField] private float _attackRate = 1f;
-    [SerializeField] private float _damage = 1f;
-    [SerializeField] private float _cost = 5;
+    [SyncVar, SerializeField] private float _moveSpeed = 0.8f;
+    [SyncVar, SerializeField] private float _attackRate = 1f;
+    [SyncVar, SerializeField] private float _damage = 1f;
+    [SyncVar, SerializeField] private float _cost = 10;
     [SerializeField] private Elements _element;
     [SerializeField] private Animator _animator;
     [SerializeField] private NetworkAnimator _netAnimator;
     [SerializeField] private Collider _selectCollider;
 
+    private float _addExpMultipleForNextLvl = 5;
+    private float _addCostForNextLvl = 5;
+    private float _costBase = 10;
     private float _nextAttackTime = 0f;
     private IEnemyChecker _enemyChecker;
     private CharacterStateMachine _stateMachine;
@@ -38,6 +44,10 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public float Cost { get => _cost; }
     public float Damage { get => _damage; }
     public float AttackRate { get => _attackRate; }
+    public int CurrentLVL => _lvl;
+    public int MaxLVL => 10;
+    public float CurrentExp => _currentExp;
+    public float ExpForNextLVL => _expForNextLvl;
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -45,12 +55,15 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<IDamageable, float> DamageTaked;
     public event Action<Damage> Died;
     public event Action<float, float> HPChanged;
+    public event Action<int, int> LVLChanged;
+    public event Action<float, float> ExpChanged;
+    public event Action<float> CostChanged;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        if (isOwned == false)
+        if (isOwned == false || Game.Instance.OwnerBase == null)
             return;
 
         _path = Game.Instance.OwnerBase.CurrentPath;
@@ -139,6 +152,42 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         return false;
     }
 
+    public void SetLVL(int lvl)
+    {
+        if (lvl <= MaxLVL)
+        {
+            var oldLvl = _lvl;
+            _lvl = lvl;
+
+            _cost = _costBase + (lvl - 1) * _addCostForNextLvl;
+            _expForNextLvl = lvl * _addExpMultipleForNextLvl;
+
+            ExpChanged?.Invoke(_currentExp, _expForNextLvl);
+            LVLChanged?.Invoke(oldLvl, _lvl);
+            CostChanged?.Invoke(_cost);
+
+            RpcExpChanged(_currentExp, _expForNextLvl);
+            RpcLVLChanged(oldLvl, _lvl);
+            RpcCostChanged(_cost);
+        }
+    }
+
+    public void AddExp(float value)
+    {
+        var total = _currentExp + value;      
+
+        if (total >= _expForNextLvl)
+        {
+            total -= _expForNextLvl;
+            SetLVL(_lvl + 1);
+            
+        }
+        _currentExp = total;    
+        ExpChanged?.Invoke(_currentExp, _expForNextLvl);
+
+        RpcExpChanged(_currentExp, _expForNextLvl);
+    }
+
     [Command]
     public void DealDamage(GameObject target)
     {
@@ -172,5 +221,23 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _netAnimator.SetTrigger("Die");
         _selectCollider.enabled = false;
         GetComponent<NavMeshAgent>().enabled = false;
+    }
+
+    [ClientRpc]
+    private void RpcExpChanged(float currentExp, float expForNextLvl)
+    {
+        ExpChanged?.Invoke(currentExp, expForNextLvl);
+    }
+    
+    [ClientRpc]
+    private void RpcLVLChanged(int oldLvl, int lvl)
+    {
+        LVLChanged?.Invoke(oldLvl, lvl);
+    }
+
+    [ClientRpc]
+    private void RpcCostChanged(float cost)
+    {
+        CostChanged?.Invoke(cost);
     }
 }

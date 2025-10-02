@@ -17,7 +17,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SyncVar] private bool _isDead;
     [SyncVar] private float _battlePoints = 0;
 
-    private Dictionary<Character, int> _CharactersLVL = new Dictionary<Character, int>();
+    [SerializeField] private List<Character> _charactersForCards = new List<Character>();
     private float _battlePointsTakeRate = 1;
     private float _battlePointsTakeNum = 1;
     private float _spawnUnitDeley = 10;
@@ -39,8 +39,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public Character SelectedForSpawnUnit { get => _selectedForSpawnUnit; set => _selectedForSpawnUnit = value; }
     public float Health { get { return _health; } private set { HPChanged?.Invoke(Health, value); RpcHPChanged(Health, value); _health = value; } }
     public List<Character> CharactersPrefabs { get => _charactersPrefabs; }
+    public List<Character> CharactersForCards { get => _charactersForCards; }
     public Path CurrentPath { get => _currentPath; }
     public List<Character> Units { get => _characters; }
+    public int MaxUnitLVL { get => 10; }
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
@@ -49,6 +51,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public event Action<ISelectable> Deselected;
     public event Action<float, float> HPChanged;
     public event Action<float, float> BattlePointsChanged;
+    public event Action<Character> CharacterSpawned;
 
     public void Init(List<Path> paths)
     {
@@ -130,9 +133,12 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
         Character character = Instantiate(_charactersPrefabs[index], spawnPoint, transform.rotation).GetComponent<Character>();
         _characters.Add(character);
+
         NetworkServer.Spawn(character.gameObject, gameObject);
 
         Game.Instance.RpcMarkLayerObj(character);
+
+        CharacterSpawned?.Invoke(character);
     }
 
     private IEnumerator RegenBattlePointsJob()
