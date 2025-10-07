@@ -188,6 +188,42 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         RpcExpChanged(_currentExp, _expForNextLvl);
     }
 
+    public void Buff(Buffs buff, float value)
+    {
+        switch (buff)
+        {
+            case Buffs.Damage:
+                _damage *= value;
+                break;
+            case Buffs.AttackSpeed:
+                _attackRate /= value;
+                break;
+            case Buffs.MoveSpeed:
+                _moveSpeed *= value;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Debuff(Buffs buff, float value)
+    {
+        switch (buff)
+        {
+            case Buffs.Damage:
+                _damage /= value;
+                break;
+            case Buffs.AttackSpeed:
+                _attackRate *= value;
+                break;
+            case Buffs.MoveSpeed:
+                _moveSpeed /= value;
+                break;
+            default:
+                break;
+        }
+    }
+
     [Command]
     public void DealDamage(GameObject target)
     {

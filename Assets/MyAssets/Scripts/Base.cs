@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
@@ -43,6 +44,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public Path CurrentPath { get => _currentPath; }
     public List<Character> Units { get => _characters; }
     public int MaxUnitLVL { get => 10; }
+    public float BattlePoints { get => _battlePoints; }
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
@@ -116,15 +118,27 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         }
     }
 
-    public bool TrySpawnUnit(Character character)
+    public bool TrySpawnUnit(Character character, float cost)
     {
-        if (character.Cost <= _battlePoints)
+        if (cost <= _battlePoints)
         {
             int index = _charactersPrefabs.FindIndex(item => item == character);
-            CmdTrySpawnUnit(index, character.Cost);
+            CmdTrySpawnUnit(index, cost);
             return true;
         }
         return false;
+    }
+
+    public void BuffUnitInRadius(Buffs buff, float value, float time)
+    {
+        List<Character> list = new List<Character>();
+
+        foreach (Character character in _characters)
+        {
+            character.Buff(buff, value);
+            list.Add(character);
+        }
+        StartCoroutine(DebufUnitsJob(buff, value, list, time));
     }
 
     private void SpawnUnit(int index)
@@ -162,6 +176,30 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
             int index = _charactersPrefabs.FindIndex(item => item == _selectedForSpawnUnit);
             CmdSpawnUnit(index);
         }
+    }
+
+    private IEnumerator DebufUnitsJob(Buffs buff, float value, List<Character> list, float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        foreach (Character character in list)
+        {
+            character.Debuff(buff, value);
+        }
+    }
+
+    [Command]
+    public void CmdBuffUnitInRadius(Buffs buff, float value, float time)
+    {
+        BuffUnitInRadius(buff, value, time);
+    }
+
+    [Command]
+    public void CmdPayCost(float value)
+    {
+        float newValue = _battlePoints + value;
+        RpcBattlePointsChanged(_battlePoints, newValue);
+        _battlePoints -= value;
     }
 
     [Command]
