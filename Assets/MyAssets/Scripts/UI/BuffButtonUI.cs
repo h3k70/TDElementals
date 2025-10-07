@@ -17,12 +17,12 @@ public class BuffButtonUI : MonoBehaviour
     private Base _base1;
     private int _lvl = 0;
     private int _maxLvl = 10;
-    private float _baseBuffValue = .5f;
-    private float _buffValue = .5f;
+    private float _baseBuffValue = .05f;
+    private float _buffValue = .05f;
     private float _baseDuration = 20f;
     private float _duration = 20f;
     private float _addDuration = 2f;
-    private float _cost = 10f;
+    private float _cost = 8f;
     private float _addCost = 2f;
     private bool _isReady = true;
 

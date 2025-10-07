@@ -884,7 +884,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: =>
+  m_text: "\u2191"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3144,11 +3144,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 119.93
+      value: 133.94
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 62
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3209,6 +3209,10 @@ PrefabInstance:
     - target: {fileID: 5063247889646712446, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_Name
       value: BuffAttakspeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719372504957786947, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -47.999996
       objectReference: {fileID: 0}
     - target: {fileID: 8728434749466583527, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: _buffType
@@ -3408,7 +3412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <=
+  m_text: "\u2193"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4380,11 +4384,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 119.93
+      value: 133.94
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 62
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4436,15 +4440,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647736755853860661, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_text
-      value: Move Speed Buff
+      value: Speed Buff
       objectReference: {fileID: 0}
     - target: {fileID: 3647736755853860661, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_fontSize
-      value: 24.15
+      value: 29.95
       objectReference: {fileID: 0}
     - target: {fileID: 5063247889646712446, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_Name
       value: BuffMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719372504957786947, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -47.999996
       objectReference: {fileID: 0}
     - target: {fileID: 8728434749466583527, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: _buffType
@@ -5996,11 +6004,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 119.93
+      value: 133.94
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 62
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 2192043391447557020, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6053,6 +6061,10 @@ PrefabInstance:
     - target: {fileID: 5063247889646712446, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
       propertyPath: m_Name
       value: BuffAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719372504957786947, guid: ed0ddde821b5eea42b6e1c508039af06, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -47.999996
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

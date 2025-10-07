@@ -15,10 +15,13 @@ public class CharacterCardUI : MonoBehaviour
     [SerializeField] private TMP_Text _damageRate;
     [SerializeField] private TMP_Text _moveSpeed;
     [SerializeField] private TMP_Text _hp;
+    [SerializeField] private TMP_Text _lvl;
     [SerializeField] private Button _button;
+    [SerializeField] private Image _cooldown;
 
     private Character _character;
     private Character _characterPref;
+    private Base _base;
 
     public Character Character { get => _character; }
     public Character CharacterPref { get => _characterPref; }
@@ -29,8 +32,13 @@ public class CharacterCardUI : MonoBehaviour
     {
         _button.onClick.AddListener(OnClick);
 
+        _base = Game.Instance.OwnerBase;
+        _base.SpawnUnitDeleyPointChanged += OnSpawnUnitDeleyPointChanged;
+
         _character = character;
         _characterPref = characterPref;
+        _character.LVLChanged += OnLVLChanged;
+        _character.CostChanged += OnCostChanged;
 
         _icon.sprite = _character.Icon;
 
@@ -66,6 +74,23 @@ public class CharacterCardUI : MonoBehaviour
         _hp.text = _character.Health.ToString();
     }
 
+    private void OnCostChanged(float obj)
+    {
+        _cost.text = obj.ToString();
+    }
+
+    private void OnLVLChanged(int arg1, int arg2)
+    {
+        _lvl.text = arg2.ToString();
+    }
+
+    public void OnDestroy()
+    {
+        _base.SpawnUnitDeleyPointChanged -= OnSpawnUnitDeleyPointChanged;
+        _character.LVLChanged -= OnLVLChanged;
+        _character.CostChanged -= OnCostChanged;
+    }
+
     public void SetSelect(bool value)
     {
         _selectFrame.gameObject.SetActive(value);
@@ -74,5 +99,10 @@ public class CharacterCardUI : MonoBehaviour
     private void OnClick()
     {
         CharacterCardSelected?.Invoke(this);
+    }
+
+    private void OnSpawnUnitDeleyPointChanged(float obj)
+    {
+        _cooldown.fillAmount = obj / _character.Cost;
     }
 }

@@ -39,6 +39,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public float MoveSpeed => _moveSpeed;
     public IEnemyChecker EnemyChecker => _enemyChecker;
     public GameObject Self => gameObject;
+    public Character SelfCard { get; set; }
     public List<Path> Paths { get => _paths; set => _paths = value; }
     public Elements Element => _element;
     public float Cost { get => _cost; }

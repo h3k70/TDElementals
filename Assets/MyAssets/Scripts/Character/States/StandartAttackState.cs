@@ -18,7 +18,7 @@ public class StandartAttackState : IState
         _character = character;
         _path = character.Path;
         _enemies = character.EnemyChecker.Enemies;
-        _mover = new AgentMover(character.GetComponent<NavMeshAgent>(), character.MoveSpeed, character.Path);
+        _mover = new AgentMover(character.GetComponent<NavMeshAgent>(), character, character.Path);
         _stateMachine = stateMachine;
     }
 

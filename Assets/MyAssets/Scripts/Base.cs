@@ -21,7 +21,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SerializeField] private List<Character> _charactersForCards = new List<Character>();
     private float _battlePointsTakeRate = 1;
     private float _battlePointsTakeNum = 1;
-    private float _spawnUnitDeley = 10;
+    private float _spawnUnitDeleyPoint = 0;
     private Character _selectedForSpawnUnit;
     private List<Character> _characters = new List<Character>();
     private Path _leftPath;
@@ -45,6 +45,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public List<Character> Units { get => _characters; }
     public int MaxUnitLVL { get => 10; }
     public float BattlePoints { get => _battlePoints; }
+    public float SpawnUnitDeleyPoint { get => _spawnUnitDeleyPoint; }
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
@@ -54,6 +55,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public event Action<float, float> HPChanged;
     public event Action<float, float> BattlePointsChanged;
     public event Action<Character> CharacterSpawned;
+    public event Action<float> SpawnUnitDeleyPointChanged;
 
     public void Init(List<Path> paths)
     {
@@ -146,6 +148,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         Vector3 spawnPoint = new Vector3(Random.Range(-_spawnOffset, _spawnOffset), 0, Random.Range(-_spawnOffset, _spawnOffset)) + transform.position;
 
         Character character = Instantiate(_charactersPrefabs[index], spawnPoint, transform.rotation).GetComponent<Character>();
+        character.SelfCard = _charactersForCards[index];
         _characters.Add(character);
 
         NetworkServer.Spawn(character.gameObject, gameObject);
@@ -168,13 +171,23 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
     private IEnumerator AutoSpawnUnitJob()
     {
-        var time = new WaitForSeconds(_spawnUnitDeley);
+        _spawnUnitDeleyPoint = 0;
 
         while (true)
         {
-            yield return time;
+            yield return null;
+
+            _spawnUnitDeleyPoint += Time.deltaTime;
+            SpawnUnitDeleyPointChanged?.Invoke(SpawnUnitDeleyPoint);
+
             int index = _charactersPrefabs.FindIndex(item => item == _selectedForSpawnUnit);
-            CmdSpawnUnit(index);
+
+            if (_charactersForCards.Count > 0 && _charactersForCards[index].Cost <= _spawnUnitDeleyPoint)
+            {
+                CmdSpawnUnit(index);
+                _spawnUnitDeleyPoint = 0;
+                SpawnUnitDeleyPointChanged?.Invoke(SpawnUnitDeleyPoint);
+            }
         }
     }
 

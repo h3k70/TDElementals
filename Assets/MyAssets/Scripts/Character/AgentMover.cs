@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 
 public class AgentMover
 {
@@ -11,13 +12,15 @@ public class AgentMover
     private Transform _currentTransform;
     private Vector3 _currentPoint;
     private float _offset = 1f;
+    private Character _character;
 
     public event Action ReachedEndPoint;
 
-    public AgentMover(NavMeshAgent agent, float speed, Path path)
+    public AgentMover(NavMeshAgent agent, Character character, Path path)
     {
+        _character = character;
         _agent = agent;
-        _agent.speed = speed;
+        _agent.speed = character.MoveSpeed;
         _path = path;
     }
 
@@ -46,6 +49,7 @@ public class AgentMover
         {
             _isMoving = false;
         }
+        _agent.speed = _character.MoveSpeed;
     }
 
     public void Pause()

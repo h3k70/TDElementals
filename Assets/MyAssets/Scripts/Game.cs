@@ -73,7 +73,11 @@ public class Game : NetworkBehaviour
 
         _base1.Destroed += OnBaseDestroed;
         _base2.Destroed += OnBaseDestroed;
+
+        _base1.CharacterSpawned += OnCharacterSpawned;
+        _base2.CharacterSpawned += OnCharacterSpawned;
     }
+
 
     [ClientRpc]
     private void RpcStartGame(GameObject base1, GameObject base2)
@@ -199,6 +203,18 @@ public class Game : NetworkBehaviour
     private void OnBattlePointsChanged(float arg1, float arg2)
     {
         _gameplayUI.OnBattlePointsChanged(arg1, arg2);
+    }
+
+    private void OnCharacterSpawned(Character character)
+    {
+        character.Died += OnCharacterDied;
+    }
+
+    private void OnCharacterDied(Damage damage)
+    {
+        damage.Damageable.Self.GetComponent<Character>().Died -= OnCharacterDied;
+        var character = damage.DamageDealer.Self.GetComponent<Character>();
+        character.SelfCard.AddExp(3);
     }
 
     [ClientRpc]
