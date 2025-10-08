@@ -52,6 +52,13 @@ public class AgentMover
         _agent.speed = _character.MoveSpeed;
     }
 
+    public void SetPath(Path path)
+    {
+        _path = path;
+        Resume();
+        _isMoving = false;
+    }
+
     public void Pause()
     {
         _agent.isStopped = true;

@@ -63,18 +63,24 @@ public class UnitCommandUI : MonoBehaviour
     private void OnDefenseMode()
     {
         _command = UnitCommands.Defense;
-        //_character.SetMode(_command);
+
+        if (_character != null)
+            _character.SetMode(_command);
     }
 
     private void OnAttackBaseMode()
     {
         _command = UnitCommands.PushBase;
-        //_character.SetMode(_command);
+
+        if (_character != null)
+            _character.SetMode(_command);
     }
 
     private void OnAttackUniysMode()
     {
         _command = UnitCommands.MoveAndAttak;
-        //_character.SetMode(_command);
+
+        if (_character != null)
+            _character.SetMode(_command);
     }
 }

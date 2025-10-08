@@ -25,7 +25,7 @@ public class StandartAttackState : IState
     public void Enter()
     {
         _path = _character.Path;
-        //_mover.SetPath(_path);
+        _mover.SetPath(_path);
         _mover.ReachedEndPoint += OnReachedEndPoint;
     }
 
