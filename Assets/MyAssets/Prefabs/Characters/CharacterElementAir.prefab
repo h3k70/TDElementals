@@ -25,8 +25,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: a4e473809833d2144bb4116073e28e68, type: 3}
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
-      propertyPath: _health
+      propertyPath: _damage
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _health
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _element
@@ -34,7 +38,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _moveSpeed
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _attackRate
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3942999045789797706, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: m_Avatar

@@ -148,7 +148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 564174879}
+  - {fileID: 162332582}
   m_Father: {fileID: 604020288}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &126827813
@@ -360,7 +360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 162332582}
   m_Layer: 0
-  m_Name: CameraPointForBase2
+  m_Name: CameraPointForBase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,12 +374,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162332581}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.32183442, y: 0.625866, z: -0.3171069, w: 0.63573396}
-  m_LocalPosition: {x: -12.2009, y: 15.598532, z: 15.437978}
+  m_LocalRotation: {x: -0.31710684, y: 0.63573396, z: -0.32183433, w: -0.62586594}
+  m_LocalPosition: {x: 12.200908, y: 15.598532, z: 14.562026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 731611402}
+  m_Father: {fileID: 115694652}
   m_LocalEulerAnglesHint: {x: 53.72, y: 89.087, z: -0.033}
 --- !u!1 &245938295
 GameObject:
@@ -1684,7 +1684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 564174879}
   m_Layer: 0
-  m_Name: CameraPointForBase1
+  m_Name: CameraPointForBase2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1698,12 +1698,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564174878}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3218378, y: 0.62586355, z: -0.31710735, w: 0.6357343}
-  m_LocalPosition: {x: -12.200892, y: 15.598532, z: 14.562018}
+  m_LocalRotation: {x: 0.31710735, y: -0.6357343, z: 0.3218378, w: 0.62586355}
+  m_LocalPosition: {x: 12.2009, y: 15.598532, z: 15.437978}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 115694652}
+  m_Father: {fileID: 731611402}
   m_LocalEulerAnglesHint: {x: 28, y: 90, z: 0}
 --- !u!1 &583146689
 GameObject:
@@ -2149,7 +2149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 162332582}
+  - {fileID: 564174879}
   m_Father: {fileID: 604020288}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!1 &733622678
@@ -3228,8 +3228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayUI
   _unitPanelUI: {fileID: 1220829280}
-  _swichLeftPathButton: {fileID: 1065849912}
-  _swichRightPathButton: {fileID: 1346482249}
+  _swichLeftPathButton: {fileID: 1346482249}
+  _swichRightPathButton: {fileID: 1065849912}
   _buttlePoints: {fileID: 1967286826}
   _unitCommandUI: {fileID: 1595910674}
   _buffButtons:
@@ -3319,7 +3319,7 @@ GameObject:
   - component: {fileID: 1065849913}
   - component: {fileID: 1065849912}
   m_Layer: 5
-  m_Name: ButtonLeftPath
+  m_Name: ButtonRightPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3839,7 +3839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -622.00006, y: -382}
+  m_AnchoredPosition: {x: -622, y: -382}
   m_SizeDelta: {x: -1321.75, y: -820.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1220829277
@@ -4297,12 +4297,12 @@ MonoBehaviour:
   syncInterval: 0
   _basePref: {fileID: 1562038350134797717, guid: f3ffba3b808f93945903bae912adba20, type: 3}
   _baseSpawnPoint1: {fileID: 115694652}
-  _baseCameraPoint1: {fileID: 564174879}
+  _baseCameraPoint1: {fileID: 162332582}
   _paths1:
   - {fileID: 8963030263582199807}
   - {fileID: 4449679110817144658}
   _baseSpawnPoint2: {fileID: 731611402}
-  _baseCameraPoint2: {fileID: 162332582}
+  _baseCameraPoint2: {fileID: 564174879}
   _paths2:
   - {fileID: 475640447}
   - {fileID: 1005092186}
@@ -4508,7 +4508,7 @@ GameObject:
   - component: {fileID: 1346482250}
   - component: {fileID: 1346482249}
   m_Layer: 5
-  m_Name: ButtonRightPath
+  m_Name: ButtonLeftPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
