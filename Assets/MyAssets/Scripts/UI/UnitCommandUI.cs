@@ -23,7 +23,7 @@ public class UnitCommandUI : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
 
         _selector.Selected += OnSelected;
         _selector.Deselected += OnDeselected;
@@ -43,37 +43,38 @@ public class UnitCommandUI : MonoBehaviour
     {
         if (selectable is Character character)
         {
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
             _character = character;
+            _character.SetMode(_command);
         }
         else
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
             _character = null;
         }
     }
     
     private void OnDeselected(ISelectable selectable)
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         _character = null;
     }
 
     private void OnDefenseMode()
     {
         _command = UnitCommands.Defense;
-        _character.SetMode(_command);
+        //_character.SetMode(_command);
     }
 
     private void OnAttackBaseMode()
     {
         _command = UnitCommands.PushBase;
-        _character.SetMode(_command);
+        //_character.SetMode(_command);
     }
 
     private void OnAttackUniysMode()
     {
         _command = UnitCommands.MoveAndAttak;
-        _character.SetMode(_command);
+        //_character.SetMode(_command);
     }
 }

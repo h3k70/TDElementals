@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
 public class PushBaseSatate : IState
@@ -7,32 +8,34 @@ public class PushBaseSatate : IState
     private Character _character;
     private IStateSwitcher _stateMachine;
     private Path _path;
-    private PathMover _mover;
-    private float _offset = 1.5f;
+    private NavMeshAgent _mover;
+    private float _offset = 1f;
 
     public PushBaseSatate(Character character, IStateSwitcher stateMachine)
     {
         _character = character;
         _path = character.Path;
-        _mover = new PathMover(character.transform, character.MoveSpeed, character.Path, _offset);
+        _mover = character.GetComponent<NavMeshAgent>();
         _stateMachine = stateMachine;
     }
 
     public void Enter()
     {
         _path = _character.Path;
-        _mover.SetPath(_path);
-        _mover.ReachedEndPoint += OnReachedEndPoint;
+        _mover.SetDestination(_path.Points[^1].position);
     }
 
     public void Exit()
     {
-        _mover.ReachedEndPoint -= OnReachedEndPoint;
+        _mover.SetDestination(_character.transform.position);
     }
 
     public void Update()
     {
-        _mover.Update();
+        if (Vector3.Distance(_character.transform.position, _path.Points[^1].position) <= _offset)
+        {
+            OnReachedEndPoint();
+        }
     }
 
     private void OnReachedEndPoint()
