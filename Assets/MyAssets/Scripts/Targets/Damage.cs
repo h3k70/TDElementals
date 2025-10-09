@@ -22,33 +22,33 @@ public struct Damage
             case Elements.Air:
 
                 if (damageable.Element == Elements.Water)
-                    value *= _multipler;
+                    Value *= _multipler;
                 else if (damageable.Element == Elements.Earth)
-                    value /= _multipler;
+                    Value /= _multipler;
                 break;
 
             case Elements.Fire:
 
                 if (damageable.Element == Elements.Earth)
-                    value *= _multipler;
+                    Value *= _multipler;
                 else if (damageable.Element == Elements.Water)
-                    value /= _multipler;
+                    Value /= _multipler;
                 break;
 
             case Elements.Water:
 
                 if (damageable.Element == Elements.Fire)
-                    value *= _multipler;
+                    Value *= _multipler;
                 else if (damageable.Element == Elements.Air)
-                    value /= _multipler;
+                    Value /= _multipler;
                 break;
 
             case Elements.Earth:
 
                 if (damageable.Element == Elements.Air)
-                    value *= _multipler;
+                    Value *= _multipler;
                 else if (damageable.Element == Elements.Fire)
-                    value /= _multipler;
+                    Value /= _multipler;
                 break;
 
             default:
