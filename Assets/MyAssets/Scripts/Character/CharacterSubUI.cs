@@ -41,7 +41,7 @@ public class CharacterSubUI : MonoBehaviour
 
     private void OnDamageTaked(IDamageable damageable, float damage)
     {
-        _popText.Show("-" + damage);
+        _popText.Show("-" + damage.ToString("0.0"));
     }
 
     private void OnDied(Damage damage)

@@ -10,6 +10,7 @@ public class UnitCommandUI : MonoBehaviour
     [SerializeField] private Button _attackUniysMode;
     [SerializeField] private Button _attackBaseMode;
     [SerializeField] private Button _defenseMode;
+    [SerializeField] private Button _attackWeakMode;
 
     private Selector _selector;
     private UnitCommands _command;
@@ -31,6 +32,7 @@ public class UnitCommandUI : MonoBehaviour
         _attackUniysMode.onClick.AddListener(OnAttackUniysMode);
         _attackBaseMode.onClick.AddListener(OnAttackBaseMode);
         _defenseMode.onClick.AddListener(OnDefenseMode);
+        _attackWeakMode.onClick.AddListener(OnAttackWeakMode);
     }
 
     private void OnDestroy()
@@ -79,6 +81,14 @@ public class UnitCommandUI : MonoBehaviour
     private void OnAttackUniysMode()
     {
         _command = UnitCommands.MoveAndAttak;
+
+        if (_character != null)
+            _character.SetMode(_command);
+    }
+
+    private void OnAttackWeakMode()
+    {
+        _command = UnitCommands.MoveAndAttackWeak;
 
         if (_character != null)
             _character.SetMode(_command);

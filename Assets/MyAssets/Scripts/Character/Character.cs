@@ -133,6 +133,10 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
                 _stateMachine.SwitchState<DefenceState>();
                 break;
 
+            case UnitCommands.MoveAndAttackWeak:
+                _stateMachine.SwitchState<AttackWeakElementState>();
+                break;
+
             default:
                 break;
         }

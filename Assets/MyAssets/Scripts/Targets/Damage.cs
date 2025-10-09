@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public struct Damage
@@ -57,4 +58,15 @@ public struct Damage
 
         damageable.TakeDamage(this);
     }
+}
+
+public class ElementsCross
+{
+    public static readonly Dictionary<Elements, Elements> StrongWeak = new Dictionary<Elements, Elements>()
+    {
+        { Elements.Air, Elements.Water },
+        { Elements.Earth, Elements.Air },
+        { Elements.Fire, Elements.Earth },
+        { Elements.Water, Elements.Fire },
+    };
 }
