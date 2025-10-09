@@ -5,6 +5,7 @@ using Mirror;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 
 public class Base : NetworkBehaviour, IDamageable, ISelectable
@@ -19,8 +20,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SyncVar] private float _battlePoints = 0;
 
     [SerializeField] private List<Character> _charactersForCards = new List<Character>();
-    private float _battlePointsTakeRate = 1;
-    private float _battlePointsTakeNum = 1;
+    private float _battlePointsTakeRate = 30;
+    private float _battlePointsTakeNum = 10;
     private float _spawnUnitDeleyPoint = 0;
     private Character _selectedForSpawnUnit;
     private List<Character> _characters = new List<Character>();
@@ -161,11 +162,13 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private IEnumerator RegenBattlePointsJob()
     {
         var time = new WaitForSeconds(_battlePointsTakeRate);
+        int num = 0;
 
         while (true)
         {
             yield return time;
-            CmdAddBattlePoints();
+            num++;
+            CmdAddBattlePoints(_battlePointsTakeNum * num);
         }
     }
 
@@ -216,9 +219,9 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     }
 
     [Command]
-    private void CmdAddBattlePoints()
+    private void CmdAddBattlePoints(float value)
     {
-        float newValue = _battlePoints + _battlePointsTakeNum;
+        float newValue = _battlePoints + value;
 
         BattlePointsChanged?.Invoke(_battlePoints, newValue);
         RpcBattlePointsChanged(_battlePoints, newValue);
@@ -230,7 +233,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     {
         if (cost <= _battlePoints)
         {
-            _battlePoints -= cost;
+            float newValue = _battlePoints - cost;
+            BattlePointsChanged?.Invoke(_battlePoints, newValue);
+            RpcBattlePointsChanged(_battlePoints, newValue);
+            _battlePoints = newValue;
 
             SpawnUnit(index);
         }

@@ -11,7 +11,7 @@ public class AgentMover
     private bool _isReachEndPoint = false;
     private Transform _currentTransform;
     private Vector3 _currentPoint;
-    private float _offset = 1f;
+    private float _offset = 4f;
     private Character _character;
 
     public event Action ReachedEndPoint;

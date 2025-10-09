@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackBaseBuildState : IState
 {
     private Character _character;
-    private float _searchRadius = 5;
+    private float _searchRadius = 10;
     private IDamageable _target;
 
     public AttackBaseBuildState(Character character)
