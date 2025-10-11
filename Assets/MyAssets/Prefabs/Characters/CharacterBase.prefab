@@ -409,6 +409,77 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!1 &6008573443148187727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1569974752936336608}
+  - component: {fileID: 8778529117459551549}
+  - component: {fileID: 7749163132234032252}
+  m_Layer: 5
+  m_Name: BuffContaner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1569974752936336608
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008573443148187727}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8875741633370896926}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.011999965, y: 0.1807}
+  m_SizeDelta: {x: 1.895, y: -1.5929}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8778529117459551549
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008573443148187727}
+  m_CullTransparentMesh: 1
+--- !u!114 &7749163132234032252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008573443148187727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0.05
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &6967630280453102686
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,13 +645,25 @@ PrefabInstance:
     m_TransformParent: {fileID: 4771327744921155120}
     m_Modifications:
     - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      propertyPath: _buffIcons
+      value: 
+      objectReference: {fileID: 11400000, guid: d43541349639bb344a5002b4bbce9fb6, type: 2}
+    - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: _character
       value: 
       objectReference: {fileID: 2590931610258585019}
     - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      propertyPath: _buffImagePref
+      value: 
+      objectReference: {fileID: 7350364691119247207, guid: 3a23d2a820d27514b902044f002e8a92, type: 3}
+    - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: _selectProjector
       value: 
       objectReference: {fileID: 5529790536497222495}
+    - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      propertyPath: _buffImageContainer
+      value: 
+      objectReference: {fileID: 6008573443148187727}
     - target: {fileID: 3105205820091868338, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: m_Name
       value: SubUICanvas
@@ -675,7 +758,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3640236638090483431, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1569974752936336608}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
 --- !u!224 &8875741633370896926 stripped

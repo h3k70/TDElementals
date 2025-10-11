@@ -59,6 +59,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<int, int> LVLChanged;
     public event Action<float, float> ExpChanged;
     public event Action<float> CostChanged;
+    public event Action<Buffs> BuffAdded;
+    public event Action<Buffs> BuffRemoved;
 
     public override void OnStartClient()
     {
@@ -209,6 +211,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
             default:
                 break;
         }
+        BuffAdded?.Invoke(buff);
+        RpcBuffAdded(buff);
     }
 
     public void Debuff(Buffs buff, float value)
@@ -227,6 +231,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
             default:
                 break;
         }
+        BuffRemoved?.Invoke(buff);
+        RpcBuffRemoved(buff);
     }
 
     [Command]
@@ -280,5 +286,17 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private void RpcCostChanged(float cost)
     {
         CostChanged?.Invoke(cost);
+    }
+
+    [ClientRpc]
+    private void RpcBuffAdded(Buffs buff)
+    {
+        BuffAdded?.Invoke(buff);
+    }
+
+    [ClientRpc]
+    private void RpcBuffRemoved(Buffs buff)
+    {
+        BuffRemoved?.Invoke(buff);
     }
 }

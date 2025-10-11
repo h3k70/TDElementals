@@ -213,9 +213,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [Command]
     public void CmdPayCost(float value)
     {
-        float newValue = _battlePoints + value;
+        float newValue = _battlePoints - value;
+        BattlePointsChanged?.Invoke(_battlePoints, newValue);
         RpcBattlePointsChanged(_battlePoints, newValue);
-        _battlePoints -= value;
+        _battlePoints = newValue;
     }
 
     [Command]
