@@ -38,6 +38,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private Path _path;
     private List<Path> _paths;
     private UnitCommands _command;
+    private float _percentUpAttributes = 0.1f;
 
     public Sprite Icon => _icon;
     public bool IsSelected { get; private set; }
@@ -66,6 +67,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<IDamageable, float> DamageTaked;
     public event Action<Damage> Died;
     public event Action<float, float> HPChanged;
+    public event Action<float, float> MaxHPChanged;
     public event Action<int, int> LVLChanged;
     public event Action<float, float> ExpChanged;
     public event Action<float> CostChanged;
@@ -83,6 +85,9 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public override void OnStartClient()
     {
         base.OnStartClient();
+
+        HPChanged?.Invoke(_health, _health);
+        MaxHPChanged?.Invoke(_maxHealth, _maxHealth);
 
         if (isOwned == false || Game.Instance.OwnerBase == null)
             return;
@@ -189,6 +194,11 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         {
             var oldLvl = _lvl;
             _lvl = lvl;
+
+            _health += _lvl * _percentUpAttributes * _health;
+            _maxHealth += _lvl * _percentUpAttributes * _maxHealth;
+            RpcHPChanged(_health, _health);
+            RpcMaxHPChanged(_maxHealth, _maxHealth);
 
             _cost = _costBase + (lvl - 1) * _addCostForNextLvl;
             _expForNextLvl = lvl * _addExpMultipleForNextLvl;
@@ -333,6 +343,12 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private void RpcHPChanged(float oldValue, float newValue)
     {
         HPChanged?.Invoke(oldValue, newValue);
+    }
+
+    [ClientRpc]
+    private void RpcMaxHPChanged(float oldValue, float newValue)
+    {
+        MaxHPChanged?.Invoke(oldValue, newValue);
     }
 
     [ClientRpc]

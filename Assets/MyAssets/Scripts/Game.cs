@@ -25,7 +25,7 @@ public class Game : NetworkBehaviour
     private NetworkConnectionToClient player1;
     private NetworkConnectionToClient player2;
     private Selector _selector;
-    private float _expForKill = 2;
+    private float _expForKill = 3;
 
     public Base OwnerBase { get => _ownerBase; }
 
@@ -103,6 +103,7 @@ public class Game : NetworkBehaviour
             item.Init(_ownerBase);
 
         _ownerBase.BattlePointsChanged += OnBattlePointsChanged;
+        OnBattlePointsChanged(_ownerBase.BattlePoints, _ownerBase.BattlePoints);
     }
 
     private Base CreateBase(NetworkConnectionToClient playerConn, Transform spawnPoint, List<Path> paths)

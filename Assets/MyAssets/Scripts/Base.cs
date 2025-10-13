@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using IO.Swagger.Model;
 using Mirror;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
@@ -75,6 +76,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
             _regenBattlePointsJob = StartCoroutine(RegenBattlePointsJob());
             _autoSpawnUnitJob = StartCoroutine(AutoSpawnUnitJob());
+
+            BattlePointsChanged?.Invoke(_battlePoints, _battlePoints);
         }
     }
 
@@ -157,6 +160,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         character.SelfCard = _charactersForCards[index];
         _characters.Add(character);
 
+        character.SetLVL(_charactersForCards[index].CurrentLVL);
+
         NetworkServer.Spawn(character.gameObject, gameObject);
 
         Game.Instance.RpcMarkLayerObj(character);
@@ -199,6 +204,47 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         }
     }
 
+    IEnumerator BuffUnitInRadiusJob(Buffs buff, float value, float time)
+    {
+        List<Character> list = new List<Character>();
+        float radius = 10;
+        float deley = 1;
+        var deleyTime = new WaitForSeconds(deley);
+
+        while (time > 0) 
+        {
+            foreach (Character character in _characters)
+            {
+                if (Vector3.Distance(character.transform.position, transform.position) > radius)
+                {
+                    if (list.Contains(character))
+                    {
+                        list.Remove(character);
+                        character.Debuff(buff, value);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else if (list.Contains(character) == false)
+                {
+                    character.Buff(buff, value);
+                    list.Add(character);
+                }
+
+            }
+
+            yield return deleyTime;
+            time -= deley;
+        }
+
+        foreach (Character character in list)
+        {
+            character.Debuff(buff, value);
+        }
+    }
+
     private IEnumerator DebufUnitsJob(Buffs buff, float value, List<Character> list, float time)
     {
         yield return new WaitForSeconds(time);
@@ -212,7 +258,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [Command]
     public void CmdBuffUnitInRadius(Buffs buff, float value, float time)
     {
-        BuffUnitInRadius(buff, value, time);
+        StartCoroutine(BuffUnitInRadiusJob(buff, value, time));
     }
 
     [Command]

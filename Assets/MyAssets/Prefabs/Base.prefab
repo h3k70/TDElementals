@@ -108,6 +108,8 @@ MonoBehaviour:
   - {fileID: 4121681500887632269, guid: 5f9c6099d7ed34449ae8a34d8c254660, type: 3}
   - {fileID: 8045532245458078746, guid: 58ec867e54d7fec4e9011090acb7c8ed, type: 3}
   - {fileID: 8423058121153291780, guid: 747dd3695f8b0ea499c5795eb3beaca3, type: 3}
+  _selectCollider: {fileID: 0}
+  _charactersForCards: []
 --- !u!135 &2976342375154434041
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -253,6 +255,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3640236638090483431, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3895606104375620109, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      propertyPath: m_TextWrappingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4854557261195407206, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}

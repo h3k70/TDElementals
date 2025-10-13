@@ -16,7 +16,8 @@ public class BuffButtonUI : MonoBehaviour
 
     private Base _base1;
     private int _lvl = 0;
-    private int _maxLvl = 10;
+    private int _clickCount = 0;
+    private int _maxLvl = 20;
     private float _baseBuffValue = .05f;
     private float _buffValue = .05f;
     private float _baseDuration = 20f;
@@ -32,7 +33,7 @@ public class BuffButtonUI : MonoBehaviour
     {
         _base1 = base1;
         _button.onClick.AddListener(OnClick);
-        LvlUp();
+        TryLvlUp();
     }
 
     private void OnClick()
@@ -43,13 +44,20 @@ public class BuffButtonUI : MonoBehaviour
             _base1.CmdBuffUnitInRadius(_buffType, _buffValue, _duration);
             _isReady = false;
             StartCoroutine(CooldownJob());
-            LvlUp();
+            TryLvlUp();
             _cooldownImage.gameObject.SetActive(true);
         }
     }
 
-    private void LvlUp()
+    private void TryLvlUp()
     {
+        if (_clickCount + 1 < _lvl)
+        {
+            _clickCount++;
+            return;
+        }
+        _clickCount = 0;
+
         if (_lvl + 1 <= _maxLvl)
         {
             _lvl++;

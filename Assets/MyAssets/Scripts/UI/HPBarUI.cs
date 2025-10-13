@@ -15,6 +15,7 @@ public class HPBarUI : MonoBehaviour
         OnValueChanged(_maxValue, _maxValue);
 
         character.HPChanged += OnValueChanged;
+        character.MaxHPChanged += OnMaxValueChanged;
     }
 
     public void Init(Base character)
@@ -34,5 +35,10 @@ public class HPBarUI : MonoBehaviour
     private void OnValueChanged(float value, float newValue)
     {
         _slider.value = newValue / _maxValue;
+    }
+
+    private void OnMaxValueChanged(float value, float newValue)
+    {
+        _maxValue = newValue;
     }
 }
