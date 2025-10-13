@@ -23,8 +23,6 @@ public class ExpBarUI : MonoBehaviour
 
     private void OnValueChanged(float value, float MaxValue)
     {
-        Debug.Log(value + "_ _" + MaxValue);
         _slider.value = value / MaxValue;
-        Debug.Log(_slider.value);
     }
 }

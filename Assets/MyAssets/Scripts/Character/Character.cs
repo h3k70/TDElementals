@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Mirror;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
@@ -277,6 +278,13 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         }
     }
 
+    private IEnumerator DieDissolve()
+    {
+        yield return new WaitForSeconds(5);
+        transform.DOLocalMoveY(-1, 15);
+        Destroy(gameObject, 15);
+    }
+
     [Command]
     public void DealDamage(GameObject target)
     {
@@ -310,6 +318,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _netAnimator.SetTrigger("Die");
         _selectCollider.enabled = false;
         GetComponent<NavMeshAgent>().enabled = false;
+        StartCoroutine(DieDissolve());
     }
 
     [ClientRpc]

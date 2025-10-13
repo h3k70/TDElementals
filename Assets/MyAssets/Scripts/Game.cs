@@ -178,11 +178,13 @@ public class Game : NetworkBehaviour
 
         foreach (var unit in _base1.Units)
         {
-            NetworkServer.UnSpawn(unit.gameObject);
+            if (unit != null)
+                NetworkServer.UnSpawn(unit.gameObject);
         }
         foreach (var unit in _base2.Units)
         {
-            NetworkServer.UnSpawn(unit.gameObject);
+            if (unit != null)
+                NetworkServer.UnSpawn(unit.gameObject);
         }
 
         NetworkServer.UnSpawn(_base1.gameObject);
