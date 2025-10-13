@@ -13,7 +13,7 @@ public struct Damage
         Value = value;
         DamageDealer = damageDealer;
         Damageable = damageable;
-
+        /*
         switch (damageDealer.Element)
         {
             case Elements.None:
@@ -53,7 +53,7 @@ public struct Damage
 
             default:
                 break;
-        }
+        }*/
 
         damageable.TakeDamage(this);
     }
