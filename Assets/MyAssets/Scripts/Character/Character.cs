@@ -6,11 +6,13 @@ using Mirror;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer, IHaveLVL
 {
     [SyncVar] private int _lvl = 0;
     [SyncVar] private float _currentExp = 0;
+    [SyncVar] private float _totalExp = 0;
     [SyncVar] private float _expForNextLvl = 0;
     [SyncVar] private bool _isDead;
     [SyncVar, SerializeField] private float _health = 4;
@@ -56,6 +58,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public int MaxLVL => 10;
     public float CurrentExp => _currentExp;
     public float ExpForNextLVL => _expForNextLvl;
+    public float TotalExp { get => _totalExp; }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -202,7 +205,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
     public void AddExp(float value)
     {
-        var total = _currentExp + value;      
+        var total = _currentExp + value;
+        _totalExp += value;
 
         if (total >= _expForNextLvl)
         {
@@ -211,6 +215,28 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
             
         }
         _currentExp = total;    
+        ExpChanged?.Invoke(_currentExp, _expForNextLvl);
+
+        RpcExpChanged(_currentExp, _expForNextLvl);
+    }
+
+    public void TakeExp(float value)
+    {
+        _totalExp -= value;
+        var total = _currentExp - value;
+
+        if (total < 0)
+        {
+            if (_lvl - 1 <= 0)
+                return;
+
+            total = _expForNextLvl - total;
+            SetLVL(_lvl - 1);
+
+            LVLChanged?.Invoke(_lvl - 1, _lvl);
+            RpcLVLChanged(_lvl - 1, _lvl);
+        }
+        _currentExp = total;
         ExpChanged?.Invoke(_currentExp, _expForNextLvl);
 
         RpcExpChanged(_currentExp, _expForNextLvl);
@@ -283,6 +309,12 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         yield return new WaitForSeconds(5);
         transform.DOLocalMoveY(-1, 15);
         Destroy(gameObject, 15);
+    }
+
+    [Command]
+    public void CmdPayExpCost(float value)
+    {
+        TakeExp(value);
     }
 
     [Command]

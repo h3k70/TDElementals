@@ -157,6 +157,7 @@ public class Game : NetworkBehaviour
         }
 
         _ownerBase.SelectedForSpawnUnit = card.CharacterPref;
+        _ownerBase.SelectedCardUnit = card.Character;
     }
 
     private void OnBaseDestroed()

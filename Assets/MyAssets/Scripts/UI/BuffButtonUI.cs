@@ -21,9 +21,11 @@ public class BuffButtonUI : MonoBehaviour
     private float _buffValue = .05f;
     private float _baseDuration = 20f;
     private float _duration = 20f;
+    private float _cd = 6f;
+    private float _addCd = 1f;
     private float _addDuration = 2f;
-    private float _cost = 8f;
-    private float _addCost = 2f;
+    private float _cost = 1f;
+    private float _addCost = 1f;
     private bool _isReady = true;
 
     public void Init(Base base1)
@@ -35,9 +37,9 @@ public class BuffButtonUI : MonoBehaviour
 
     private void OnClick()
     {
-        if (_isReady && _base1.BattlePoints >= _cost)
+        if (_isReady && _base1.SelectedCardUnit.TotalExp >= _cost)
         {
-            _base1.CmdPayCost(_cost);
+            _base1.SelectedCardUnit.CmdPayExpCost(_cost);
             _base1.CmdBuffUnitInRadius(_buffType, _buffValue, _duration);
             _isReady = false;
             StartCoroutine(CooldownJob());
@@ -55,6 +57,7 @@ public class BuffButtonUI : MonoBehaviour
 
             _cost += _addCost;
             _textCost.text = _cost.ToString();
+            _cd += _addCd;
         }
 
         _buffValue = 1 + _baseBuffValue * _lvl;
@@ -65,7 +68,7 @@ public class BuffButtonUI : MonoBehaviour
 
     private IEnumerator CooldownJob()
     {
-        yield return new WaitForSeconds(_baseDuration);
+        yield return new WaitForSeconds(_cd);
         _cooldownImage.gameObject.SetActive(false);
         _isReady = true;
     }

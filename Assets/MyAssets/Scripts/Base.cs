@@ -24,6 +24,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private float _battlePointsTakeNum = 10;
     private float _spawnUnitDeleyPoint = 0;
     private Character _selectedForSpawnUnit;
+    private Character _selectedCardUnit;
     private List<Character> _characters = new List<Character>();
     private Path _leftPath;
     private Path _rightPath;
@@ -49,6 +50,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public float SpawnUnitDeleyPoint { get => _spawnUnitDeleyPoint; }
     public Path LeftPath { get => _leftPath; }
     public Path RightPath { get => _rightPath; }
+    public Character SelectedCardUnit { get { return _selectedCardUnit; } set { _selectedCardUnit = value; } }
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
@@ -69,6 +71,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         {
             SelectLeftPath();
             SelectedForSpawnUnit = _charactersPrefabs[0];
+            _selectedCardUnit = _charactersForCards[0];
 
             _regenBattlePointsJob = StartCoroutine(RegenBattlePointsJob());
             _autoSpawnUnitJob = StartCoroutine(AutoSpawnUnitJob());
