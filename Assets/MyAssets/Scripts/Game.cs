@@ -25,6 +25,7 @@ public class Game : NetworkBehaviour
     private NetworkConnectionToClient player1;
     private NetworkConnectionToClient player2;
     private Selector _selector;
+    private float _expForKill = 2;
 
     public Base OwnerBase { get => _ownerBase; }
 
@@ -192,12 +193,26 @@ public class Game : NetworkBehaviour
 
     private void OnSwichRightPath()
     {
-        _ownerBase.SelecRightPath();
+        if (_selector.CurrentSelectablsUnit.Count > 0 && _selector.CurrentSelectablsUnit[0] is Character character)
+        {
+            character.SetPath(_ownerBase.RightPath);
+        }
+        else
+        {
+            _ownerBase.SelecRightPath();
+        }
     }
 
     private void OnSwichLeftPath()
     {
-        _ownerBase.SelectLeftPath();
+        if (_selector.CurrentSelectablsUnit.Count > 0 && _selector.CurrentSelectablsUnit[0] is Character character)
+        {
+            character.SetPath(_ownerBase.LeftPath);
+        }
+        else
+        {
+            _ownerBase.SelectLeftPath();
+        }
     }
 
     private void OnBattlePointsChanged(float arg1, float arg2)
@@ -212,9 +227,10 @@ public class Game : NetworkBehaviour
 
     private void OnCharacterDied(Damage damage)
     {
-        damage.Damageable.Self.GetComponent<Character>().Died -= OnCharacterDied;
+        var damagavle = damage.Damageable.Self.GetComponent<Character>();
+        damagavle.Died -= OnCharacterDied;
         var character = damage.DamageDealer.Self.GetComponent<Character>();
-        character.SelfCard.AddExp(3);
+        character.SelfCard.AddExp(damagavle.CurrentLVL + _expForKill);
     }
 
     [ClientRpc]

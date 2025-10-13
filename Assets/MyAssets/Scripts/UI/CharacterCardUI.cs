@@ -16,6 +16,7 @@ public class CharacterCardUI : MonoBehaviour
     [SerializeField] private TMP_Text _moveSpeed;
     [SerializeField] private TMP_Text _hp;
     [SerializeField] private TMP_Text _lvl;
+    [SerializeField] private ExpBarUI _expBar;
     [SerializeField] private Button _button;
     [SerializeField] private Image _cooldown;
 
@@ -72,6 +73,8 @@ public class CharacterCardUI : MonoBehaviour
         _damageRate.text = _character.AttackRate.ToString();
         _moveSpeed.text = _character.MoveSpeed.ToString();
         _hp.text = _character.Health.ToString();
+
+        _expBar.Init(character);
     }
 
     private void OnCostChanged(float obj)

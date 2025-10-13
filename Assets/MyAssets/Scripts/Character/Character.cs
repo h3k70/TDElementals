@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +13,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SyncVar] private float _expForNextLvl = 0;
     [SyncVar] private bool _isDead;
     [SyncVar, SerializeField] private float _health = 4;
+    [SyncVar, SerializeField] private float _maxHealth = 4;
+    [SyncVar, SerializeField] private float _regenHpValue = 0f;
     [SerializeField] private Sprite _icon;
     [SyncVar, SerializeField] private float _moveSpeed = 0.8f;
     [SyncVar, SerializeField] private float _attackRate = 1f;
@@ -21,6 +25,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SerializeField] private NetworkAnimator _netAnimator;
     [SerializeField] private Collider _selectCollider;
 
+    private float _regenHpRate = 1f;
     private float _addExpMultipleForNextLvl = 5;
     private float _addCostForNextLvl = 5;
     private float _costBase = 10;
@@ -29,6 +34,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private CharacterStateMachine _stateMachine;
     private Path _path;
     private List<Path> _paths;
+    private UnitCommands _command;
 
     public Sprite Icon => _icon;
     public bool IsSelected { get; private set; }
@@ -61,6 +67,14 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<float> CostChanged;
     public event Action<Buffs> BuffAdded;
     public event Action<Buffs> BuffRemoved;
+
+    private void Start()
+    {
+        if (isServer)
+        {
+            StartCoroutine(RegenHPJob());
+        }
+    }
 
     public override void OnStartClient()
     {
@@ -116,11 +130,17 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
     public void SetPath(Path path)
     {
+        if (_path == path)
+            return;
+
         _path = path;
+        SetMode(_command);
     }
 
     public void SetMode(UnitCommands mode)
     {
+        _command = mode;
+
         switch (mode)
         {
             case UnitCommands.MoveAndAttak:
@@ -233,6 +253,28 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         }
         BuffRemoved?.Invoke(buff);
         RpcBuffRemoved(buff);
+    }
+
+    private IEnumerator RegenHPJob()
+    {
+        var time = new WaitForSeconds(_regenHpRate);
+
+        while (_isDead == false)
+        {
+            yield return time;
+
+            if (_health + _regenHpValue > _maxHealth)
+            {
+                RpcHPChanged(_health, _maxHealth);
+                _health = _maxHealth;
+            }
+            else
+            {
+                RpcHPChanged(_health, _health + _regenHpValue);
+                _health += _regenHpValue;
+            }
+            
+        }
     }
 
     [Command]

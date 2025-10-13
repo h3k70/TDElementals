@@ -10,7 +10,7 @@ public class CharacterSubUI : MonoBehaviour
     [SerializeField] private Character _character;
     [SerializeField] private DecalProjector _selectProjector;
     [SerializeField] private PopText _popText;
-    [SerializeField] private BarUI _hpBar;
+    [SerializeField] private HPBarUI _hpBar;
     [SerializeField] private BuffIconUI _buffImagePref;
     [SerializeField] private GameObject _buffImageContainer;
 

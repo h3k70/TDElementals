@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BarUI : MonoBehaviour
+public class HPBarUI : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
 

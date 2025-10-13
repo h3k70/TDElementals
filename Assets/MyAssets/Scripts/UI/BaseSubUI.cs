@@ -7,7 +7,7 @@ public class BaseSubUI : MonoBehaviour
 {
     [SerializeField] private Base _base;
     [SerializeField] private PopText _popText;
-    [SerializeField] private BarUI _hpBar;
+    [SerializeField] private HPBarUI _hpBar;
 
     private void Awake()
     {

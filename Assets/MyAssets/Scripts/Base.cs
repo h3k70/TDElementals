@@ -15,7 +15,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SerializeField] private List<Character> _charactersPrefabs = new List<Character>();
     [SerializeField] private Collider _selectCollider;
 
-    [SyncVar] private float _health = 50;
+    [SyncVar] private float _health = 300;
     [SyncVar] private bool _isDead;
     [SyncVar] private float _battlePoints = 0;
 
@@ -26,7 +26,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private Character _selectedForSpawnUnit;
     private List<Character> _characters = new List<Character>();
     private Path _leftPath;
-    private Path _rightpath;
+    private Path _rightPath;
     private Path _currentPath;
     private float _spawnOffset = 1;
     private Coroutine _regenBattlePointsJob;
@@ -47,6 +47,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public int MaxUnitLVL { get => 10; }
     public float BattlePoints { get => _battlePoints; }
     public float SpawnUnitDeleyPoint { get => _spawnUnitDeleyPoint; }
+    public Path LeftPath { get => _leftPath; }
+    public Path RightPath { get => _rightPath; }
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
@@ -61,7 +63,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public void Init(List<Path> paths)
     {
         _leftPath = paths[0];
-        _rightpath = paths[1];
+        _rightPath = paths[1];
 
         if (isOwned)
         {
@@ -87,7 +89,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         if (_currentPath != null)
             _currentPath.Select(false);
 
-        _currentPath = _rightpath;
+        _currentPath = _rightPath;
         _currentPath.Select(true);
     }
 

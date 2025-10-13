@@ -15,6 +15,7 @@ public class Selector
     private int _layerMask = Layers.AllyMask;
 
     public List<ISelectable> AllSelectablsUnit { get => _allSelectablsUnit; set => _allSelectablsUnit = value; }
+    public List<ISelectable> CurrentSelectablsUnit { get => _currentSelectablsUnit; }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
