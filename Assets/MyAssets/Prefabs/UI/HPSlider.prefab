@@ -215,6 +215,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarUI
   _slider: {fileID: 7731998800918424465}
+  _barImage: {fileID: 1366044189900050183}
+  _allyColor: {r: 0.07135628, g: 0.7735849, b: 0, a: 1}
+  _enemyColor: {r: 0.7411765, g: 0, b: 0, a: 1}
 --- !u!1 &4698493046766457940
 GameObject:
   m_ObjectHideFlags: 0

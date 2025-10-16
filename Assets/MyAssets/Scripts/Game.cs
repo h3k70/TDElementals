@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
@@ -102,6 +103,8 @@ public class Game : NetworkBehaviour
 
         _ownerBase.BattlePointsChanged += OnBattlePointsChanged;
         OnBattlePointsChanged(_ownerBase.BattlePoints, _ownerBase.BattlePoints);
+
+        _selector.SubSelected += OnSubSelected;
     }
 
     private Base CreateBase(NetworkConnectionToClient playerConn, Transform spawnPoint, List<Path> paths)
@@ -157,6 +160,20 @@ public class Game : NetworkBehaviour
 
         _ownerBase.SelectedForSpawnUnit = card.CharacterPref;
         _ownerBase.SelectedCardUnit = card.Character;
+    }
+
+    private void OnSubSelected(ISelectable selectable)
+    {
+        if (selectable is Path path && _selector.CurrentSelectablsUnit.Count > 0)
+        {
+            foreach (var item in _selector.CurrentSelectablsUnit)
+            {
+                if (item.Self.TryGetComponent(out Character character))
+                {
+                    character.SetPath(path);
+                }
+            }
+        }
     }
 
     private void OnBaseDestroed()
@@ -245,14 +262,16 @@ public class Game : NetworkBehaviour
     public void RpcResetAll()
     {
         foreach(var path in _paths1)
-            path.Select(false);
+            path.SetSelect(false);
 
         foreach(var path in _paths2)
-            path.Select(false);
+            path.SetSelect(false);
 
         _gameplayUI.UnitPanelUI.SelectedCharacterCard -= OnSelectedCharacterCard;
         _ownerBase.BattlePointsChanged -= OnBattlePointsChanged;
         _gameplayUI.ResetAll();
+
+        _selector.SubSelected -= OnSubSelected;
     }
 
     [ClientRpc]

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface ISelectable
 {
+    public GameObject Self { get; }
     public Sprite Icon { get; }
     public bool IsSelected { get; }
 

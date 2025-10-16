@@ -65,6 +65,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;
     public event Action<Damage> Died;
+    public event Action<Character> CharacterDied;
     public event Action<float, float> HPChanged;
     public event Action<float, float> MaxHPChanged;
     public event Action<int, int> LVLChanged;
@@ -89,12 +90,15 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         MaxHPChanged?.Invoke(_maxHealth, _maxHealth);
 
         if (isOwned == false || Game.Instance.OwnerBase == null)
+        {
             return;
+        }
 
         _path = Game.Instance.OwnerBase.CurrentPath;
 
         _enemyChecker = GetComponentInChildren<IEnemyChecker>();
         _stateMachine = new(this);
+        _command = UnitCommands.MoveAndAttak;
     }
 
     private void Update()
@@ -361,6 +365,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         };
 
         Died?.Invoke(damage);
+        CharacterDied?.Invoke(this);
         _animator.SetTrigger("Die");
         _netAnimator.SetTrigger("Die");
         _selectCollider.enabled = false;

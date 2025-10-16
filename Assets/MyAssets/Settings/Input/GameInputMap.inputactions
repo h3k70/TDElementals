@@ -14,6 +14,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "SubSelectUnit",
+                    "type": "Value",
+                    "id": "4c1b531e-dfc8-4e48-9ad3-5ef32d0c3ad5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -80,6 +89,39 @@
                     "processors": "",
                     "groups": ";Phone",
                     "action": "SelectUnit",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "a1e065a6-7ba1-46ef-9901-01dc58e25840",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubSelectUnit",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "14f0bbad-6c63-4923-aa21-5d7abae6bdb0",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "SubSelectUnit",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "2384d571-337b-4971-ba48-5f3c4d0e7531",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "SubSelectUnit",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

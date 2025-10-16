@@ -40,5 +40,6 @@ public class DefenceState : IState
                 return;
             }
         }
+        _mover.SetDestination(_path.Points[0].position);
     }
 }

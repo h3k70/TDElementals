@@ -100,6 +100,15 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SubSelectUnit"",
+                    ""type"": ""Value"",
+                    ""id"": ""4c1b531e-dfc8-4e48-9ad3-5ef32d0c3ad5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -168,6 +177,39 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
                     ""action"": ""SelectUnit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""a1e065a6-7ba1-46ef-9901-01dc58e25840"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SubSelectUnit"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""14f0bbad-6c63-4923-aa21-5d7abae6bdb0"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""SubSelectUnit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""2384d571-337b-4971-ba48-5f3c4d0e7531"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""SubSelectUnit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -210,6 +252,7 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_SelectUnit = m_Gameplay.FindAction("SelectUnit", throwIfNotFound: true);
+        m_Gameplay_SubSelectUnit = m_Gameplay.FindAction("SubSelectUnit", throwIfNotFound: true);
     }
 
     ~@GameInputMap()
@@ -291,6 +334,7 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_SelectUnit;
+    private readonly InputAction m_Gameplay_SubSelectUnit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -306,6 +350,10 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/SelectUnit".
         /// </summary>
         public InputAction @SelectUnit => m_Wrapper.m_Gameplay_SelectUnit;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/SubSelectUnit".
+        /// </summary>
+        public InputAction @SubSelectUnit => m_Wrapper.m_Gameplay_SubSelectUnit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -335,6 +383,9 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
             @SelectUnit.started += instance.OnSelectUnit;
             @SelectUnit.performed += instance.OnSelectUnit;
             @SelectUnit.canceled += instance.OnSelectUnit;
+            @SubSelectUnit.started += instance.OnSubSelectUnit;
+            @SubSelectUnit.performed += instance.OnSubSelectUnit;
+            @SubSelectUnit.canceled += instance.OnSubSelectUnit;
         }
 
         /// <summary>
@@ -349,6 +400,9 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
             @SelectUnit.started -= instance.OnSelectUnit;
             @SelectUnit.performed -= instance.OnSelectUnit;
             @SelectUnit.canceled -= instance.OnSelectUnit;
+            @SubSelectUnit.started -= instance.OnSubSelectUnit;
+            @SubSelectUnit.performed -= instance.OnSubSelectUnit;
+            @SubSelectUnit.canceled -= instance.OnSubSelectUnit;
         }
 
         /// <summary>
@@ -422,5 +476,12 @@ public partial class @GameInputMap: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSelectUnit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SubSelectUnit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSubSelectUnit(InputAction.CallbackContext context);
     }
 }

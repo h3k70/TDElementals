@@ -13,9 +13,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SerializeField] private List<Character> _charactersPrefabs = new List<Character>();
     [SerializeField] private Collider _selectCollider;
 
-    [SyncVar] private float _health = 300;
+    [SyncVar] private float _health = 600;
     [SyncVar] private bool _isDead;
     [SyncVar] private float _battlePoints = 0;
+    [SyncVar] private float _maxUnits = 1;
 
     [SerializeField] private List<Character> _charactersForCards = new List<Character>();
     private float _battlePointsTakeRate = 30;
@@ -28,6 +29,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private Path _rightPath;
     private Path _currentPath;
     private float _spawnOffset = 1;
+    private float _maxUnitsDeley = 180;
     private Coroutine _regenBattlePointsJob;
     private Coroutine _autoSpawnUnitJob;
 
@@ -67,6 +69,9 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
         if (isOwned)
         {
+            _leftPath.gameObject.layer = Layers.Ally;
+            _rightPath.gameObject.layer = Layers.Ally;
+
             SelectLeftPath();
             SelectedForSpawnUnit = _charactersPrefabs[0];
             _selectedCardUnit = _charactersForCards[0];
@@ -76,24 +81,28 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
             BattlePointsChanged?.Invoke(_battlePoints, _battlePoints);
         }
+        if (isClient == false)
+        {
+            StartCoroutine(AddMaxUnitsJob());
+        }
     }
 
     public void SelectLeftPath()
     {
         if (_currentPath != null)
-            _currentPath.Select(false);
+            _currentPath.SetSelect(false);
 
         _currentPath = _leftPath;
-        _currentPath.Select(true);
+        _currentPath.SetSelect(true);
     }
 
     public void SelecRightPath()
     {
         if (_currentPath != null)
-            _currentPath.Select(false);
+            _currentPath.SetSelect(false);
 
         _currentPath = _rightPath;
-        _currentPath.Select(true);
+        _currentPath.SetSelect(true);
     }
 
     public void Deselect()
@@ -128,7 +137,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
     public bool TrySpawnUnit(Character character, float cost)
     {
-        if (cost <= _battlePoints)
+        if (cost <= _battlePoints && _characters.Count < _maxUnits)
         {
             int index = _charactersPrefabs.FindIndex(item => item == character);
             CmdTrySpawnUnit(index, cost);
@@ -164,6 +173,14 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         Game.Instance.RpcMarkLayerObj(character);
 
         CharacterSpawned?.Invoke(character);
+        RpcCharacterSpawned(character.gameObject);
+    }
+
+    private void OnCharacterDied(Character character)
+    {
+        character.CharacterDied -= OnCharacterDied;
+
+        _characters.Remove(character);
     }
 
     private IEnumerator RegenBattlePointsJob()
@@ -175,7 +192,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         {
             yield return time;
             num++;
-            CmdAddBattlePoints(_battlePointsTakeNum * num);
+            CmdAddBattlePoints(_battlePointsTakeNum);
         }
     }
 
@@ -192,7 +209,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
             int index = _charactersPrefabs.FindIndex(item => item == _selectedForSpawnUnit);
 
-            if (_charactersForCards.Count > 0 && _charactersForCards[index].Cost <= _spawnUnitDeleyPoint)
+            if (_charactersForCards.Count > 0 && _charactersForCards[index].Cost <= _spawnUnitDeleyPoint && _characters.Count < _maxUnits)
             {
                 CmdSpawnUnit(index);
                 _spawnUnitDeleyPoint = 0;
@@ -201,7 +218,16 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
         }
     }
 
-    IEnumerator BuffUnitInRadiusJob(Buffs buff, float value, float time)
+    private IEnumerator AddMaxUnitsJob()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_maxUnitsDeley);
+            _maxUnits++;
+        }
+    }
+
+    private IEnumerator BuffUnitInRadiusJob(Buffs buff, float value, float time)
     {
         List<Character> list = new List<Character>();
         float radius = 10;
@@ -248,14 +274,16 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
 
         foreach (Character character in list)
         {
-            character.Debuff(buff, value);
+            if (character != null)
+                character.Debuff(buff, value);
         }
     }
 
     [Command]
     public void CmdBuffUnitInRadius(Buffs buff, float value, float time)
     {
-        StartCoroutine(BuffUnitInRadiusJob(buff, value, time));
+        //StartCoroutine(BuffUnitInRadiusJob(buff, value, time));
+        BuffUnitInRadius(buff, value, time);
     }
 
     [Command]
@@ -313,5 +341,16 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     private void RpcBattlePointsChanged(float oldValue, float newValue)
     {
         BattlePointsChanged?.Invoke(oldValue, newValue);
+    }
+
+    [ClientRpc]
+    private void RpcCharacterSpawned(GameObject character)
+    {
+        var item = character.GetComponent<Character>();
+
+        _characters.Add(item);
+        CharacterSpawned?.Invoke(item);
+
+        item.CharacterDied += OnCharacterDied;
     }
 }

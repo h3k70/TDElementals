@@ -18,6 +18,7 @@ public class Selector
     public List<ISelectable> CurrentSelectablsUnit { get => _currentSelectablsUnit; }
 
     public event Action<ISelectable> Selected;
+    public event Action<ISelectable> SubSelected;
     public event Action<ISelectable> Deselected;
 
     public Selector(GameInputMap inputActions)
@@ -27,6 +28,7 @@ public class Selector
         _camera = Camera.main;
 
         _input.Gameplay.SelectUnit.performed += OnSelectUnit;
+        _input.Gameplay.SubSelectUnit.performed += OnSubSelect;
     }
 
     private void OnSelectUnit(InputAction.CallbackContext context)
@@ -57,6 +59,19 @@ public class Selector
             _currentSelectablsUnit.Add(unit);
 
             Selected?.Invoke(unit);
+        }
+    }
+
+    private void OnSubSelect(InputAction.CallbackContext context)
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        Ray ray = _camera.ScreenPointToRay(context.ReadValue<Vector2>());
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, _rayDistance, _layerMask) && hitInfo.collider.TryGetComponent(out ISelectable unit))
+        {
+            SubSelected?.Invoke(unit);
         }
     }
 }

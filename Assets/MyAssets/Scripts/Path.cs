@@ -2,13 +2,33 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Path : MonoBehaviour
+public class Path : MonoBehaviour, ISelectable
 {
     [SerializeField] private List<Transform> _points = new();
 
     public List<Transform> Points { get => _points; }
 
+    public Sprite Icon => throw new NotImplementedException();
+
+    public bool IsSelected { get; private set; }
+
+    public GameObject Self => gameObject;
+
+    private event Action<ISelectable> _selected;
     public event Action<bool> Selected;
+    public event Action<ISelectable> Deselected;
+    event Action<ISelectable> ISelectable.Selected
+    {
+        add
+        {
+            _selected += value;
+        }
+
+        remove
+        {
+            _selected -= value;
+        }
+    }
 
     public Transform GetCloserPoint(Vector3 position)
     {
@@ -39,7 +59,7 @@ public class Path : MonoBehaviour
             return null;
     }
 
-    public void Select(bool value)
+    public void SetSelect(bool value)
     {
         Selected?.Invoke(value);
     }
@@ -48,5 +68,15 @@ public class Path : MonoBehaviour
     public void Flip()
     {
         _points.Reverse();
+    }
+
+    public void Select()
+    {
+        
+    }
+
+    public void Deselect()
+    {
+        
     }
 }
