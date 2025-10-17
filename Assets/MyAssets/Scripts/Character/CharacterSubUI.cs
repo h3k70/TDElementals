@@ -24,7 +24,7 @@ public class CharacterSubUI : MonoBehaviour
         _disposabls.Add(_selectCircleDisplay);
 
         _character.DamageTaked += OnDamageTaked;
-        _character.Died += OnDied;
+        _character.CharacterDied += OnDied;
         _character.BuffAdded += OnBuffAdded;
         _character.BuffRemoved += OnBuffRemoved;
 
@@ -42,7 +42,7 @@ public class CharacterSubUI : MonoBehaviour
             item.Dispose();
 
         _character.DamageTaked -= OnDamageTaked;
-        _character.Died -= OnDied;
+        _character.CharacterDied -= OnDied;
         _character.BuffAdded -= OnBuffAdded;
         _character.BuffRemoved -= OnBuffRemoved;
     }
@@ -52,7 +52,7 @@ public class CharacterSubUI : MonoBehaviour
         _popText.Show("-" + damage.ToString("0.0"));
     }
 
-    private void OnDied(Damage damage)
+    private void OnDied(Character character)
     {
         gameObject.SetActive(false);
     }

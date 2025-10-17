@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _icon
       value: 
-      objectReference: {fileID: 21300000, guid: a4e473809833d2144bb4116073e28e68, type: 3}
+      objectReference: {fileID: 21300000, guid: e0c0e89237c681b40a5b6b55536404b3, type: 3}
     - target: {fileID: 2590931610258585019, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _damage
       value: 10
