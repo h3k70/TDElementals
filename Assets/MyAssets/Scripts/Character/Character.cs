@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer, IHaveLVL
+public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer, IHaveLVL, ITargetable
 {
     [SyncVar] private int _lvl = 0;
     [SyncVar] private float _currentExp = 0;
@@ -67,6 +67,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public Animator Animator { get => _animator; }
     public NetworkAnimator NetAnimator { get => _netAnimator; }
     public bool IsMovingToTarget { get { return _mover.IsMoveToTarget; } }
+    public Transform Transform => transform;
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -96,6 +97,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
         HPChanged?.Invoke(_health, _health);
         MaxHPChanged?.Invoke(_maxHealth, _maxHealth);
+        _skills.Init();
 
         if (isOwned == false || Game.Instance.OwnerBase == null)
         {
@@ -203,6 +205,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private void OnMoverReachedTarget()
     {
         _mover.ReachedEndPoint -= OnMoverReachedTarget;
+        _mover.StopMove();
         _skills.AutoAtack.TryCast(_target);
     }
 

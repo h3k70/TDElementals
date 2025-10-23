@@ -26,7 +26,7 @@ public abstract class Skill : NetworkBehaviour
     { 
         get
         {
-            return _target != null && Vector3.Distance(_character.transform.position, _target.Transform.position) >= _distence;
+            return _target != null && Vector3.Distance(_character.transform.position, _target.Transform.position) <= _distence;
         }
     }
     public float Distence { get => _distence; }
@@ -52,8 +52,11 @@ public abstract class Skill : NetworkBehaviour
 
     public virtual bool TryCast(ITargetable target)
     {
+        _target = target;
+
         if (_wrapperCastCoroutine == null && IsReady && IsTargetInRadius)
         {
+            _isReady = false;
             StartCoroutine(CooldownJob());
             _wrapperCastCoroutine = StartCoroutine(WrapperCastJob(target));
             return true;

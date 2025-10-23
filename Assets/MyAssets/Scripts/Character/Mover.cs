@@ -7,7 +7,7 @@ public class Mover
 {
     private NavMeshAgent _agent;
     private Character _character;
-    private float _timeForDistanceReconculate = 1;
+    private float _timeForDistanceReconculate = 0.2f;
     private Coroutine _moveCorounine;
 
     public bool IsMoveToTarget { get; private set; }
@@ -26,9 +26,9 @@ public class Mover
         if (_moveCorounine != null)
             _character.StopCoroutine(_moveCorounine);
 
+        IsMoveToTarget = true;
         _moveCorounine = _character.StartCoroutine(MoveJob(target, offset));
         _agent.isStopped = false;
-        IsMoveToTarget = true;
     }
 
     public void StopMove()
@@ -43,14 +43,14 @@ public class Mover
 
     private IEnumerator MoveJob(Transform target, float offset)
     {
-        WaitForSeconds time = new WaitForSeconds(_timeForDistanceReconculate);
+        //WaitForSeconds time = new WaitForSeconds(_timeForDistanceReconculate);
 
         while (Vector3.Distance(target.position, _character.transform.position) > offset)
         {
-            yield return time;
-
             _agent.SetDestination(target.position);
+            yield return null;
         }
+        IsMoveToTarget = false;
         ReachedEndPoint?.Invoke();
         _agent.ResetPath();
     }

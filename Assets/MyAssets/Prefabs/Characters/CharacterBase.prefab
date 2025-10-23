@@ -198,6 +198,8 @@ GameObject:
   - component: {fileID: 3942999045789797706}
   - component: {fileID: 5375835532913073868}
   - component: {fileID: 5752030166190187066}
+  - component: {fileID: 4391955469352361100}
+  - component: {fileID: 3495395462446860233}
   m_Layer: 8
   m_Name: CharacterBase
   m_TagString: Untagged
@@ -251,6 +253,8 @@ MonoBehaviour:
   _animator: {fileID: 3942999045789797706}
   _netAnimator: {fileID: 5375835532913073868}
   _selectCollider: {fileID: 3168510300479189456}
+  _agent: {fileID: 5752030166190187066}
+  _skills: {fileID: 4391955469352361100}
 --- !u!135 &3168510300479189456
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -411,6 +415,45 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!114 &4391955469352361100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455940782852663380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ad92a347488be4aac8c31b3196b447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillManager
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _character: {fileID: 2590931610258585019}
+  _allSkills: []
+  _currentSkills: []
+  _autoAtack: {fileID: 3495395462446860233}
+--- !u!114 &3495395462446860233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455940782852663380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 454778eabafec5547b3e739e385d6a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AASliceAttack
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _name: AA
+  _description: autoAttack
+  _icon: {fileID: 21300000, guid: 0e3534ce804ad6f4aa903d796cca408f, type: 3}
+  _distence: 1.8
+  _cooldown: 1.5
 --- !u!1 &6008573443148187727
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +577,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.8
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8317944451974441500
 MonoBehaviour:

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mirror;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SkillManager : NetworkBehaviour
@@ -19,6 +20,8 @@ public class SkillManager : NetworkBehaviour
 
     public void Init()
     {
+        _autoAtack.Init(_character);
+
         foreach (var skill in _allSkills)
         {
             skill.Init(_character);
