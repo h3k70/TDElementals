@@ -26,6 +26,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SerializeField] private Animator _animator;
     [SerializeField] private NetworkAnimator _netAnimator;
     [SerializeField] private Collider _selectCollider;
+    [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private SkillManager _skills;
 
     private float _regenHpRate = 1f;
     private float _addExpMultipleForNextLvl = 5;
@@ -38,6 +40,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private List<Path> _paths;
     private UnitCommands _command;
     private float _percentUpAttributes = 0.1f;
+    private Mover _mover;
+    private ITargetable _target;
 
     public Sprite Icon => _icon;
     public bool IsSelected { get; private set; }
@@ -59,6 +63,10 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public float CurrentExp => _currentExp;
     public float ExpForNextLVL => _expForNextLvl;
     public float TotalExp { get => _totalExp; }
+    public NavMeshAgent Agent { get => _agent; }
+    public Animator Animator { get => _animator; }
+    public NetworkAnimator NetAnimator { get => _netAnimator; }
+    public bool IsMovingToTarget { get { return _mover.IsMoveToTarget; } }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -99,6 +107,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _enemyChecker = GetComponentInChildren<IEnemyChecker>();
         _stateMachine = new(this);
         _command = UnitCommands.MoveAndAttak;
+        _mover = new(this);
     }
 
     private void Update()
@@ -176,19 +185,25 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         }
     }
 
-    public bool TryAttack(IDamageable target)
+    public bool TryAttack(IDamageable damageble)
     {
-        if (Time.time > _nextAttackTime)
+        if (_skills.AutoAtack.IsReady && IsMovingToTarget == false)
         {
-            _nextAttackTime = Time.time + _attackRate;
-
-            transform.LookAt(target.Self.transform.position);
-            _animator.SetTrigger("Slice Attack");
-            _netAnimator.SetTrigger("Slice Attack");
-            DealDamage(target.Self);
+            if (damageble is ITargetable targetable)
+            {
+                _target = targetable;
+                _mover.ReachedEndPoint += OnMoverReachedTarget;
+                _mover.MoveToTarget(targetable.Transform, _skills.AutoAtack.Distence);
+            }
             return true;
         }
         return false;
+    }
+
+    private void OnMoverReachedTarget()
+    {
+        _mover.ReachedEndPoint -= OnMoverReachedTarget;
+        _skills.AutoAtack.TryCast(_target);
     }
 
     public void SetLVL(int lvl)
@@ -361,7 +376,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         _animator.SetTrigger("Die");
         _netAnimator.SetTrigger("Die");
         _selectCollider.enabled = false;
-        GetComponent<NavMeshAgent>().enabled = false;
+        Agent.enabled = false;
         StartCoroutine(DieDissolve());
     }
 

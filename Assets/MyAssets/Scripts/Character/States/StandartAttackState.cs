@@ -35,7 +35,8 @@ public class StandartAttackState : IState
     {
         foreach(Character enemy in _enemies)
         {
-            _mover.Pause();
+            if (_mover.IsMoving)
+                _mover.Pause();
 
             if (enemy.IsCanTakeDamage)
             {

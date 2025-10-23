@@ -1,54 +1,57 @@
 using System;
+using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.AI;
 
 public class Mover
 {
-    private Transform _transform;
-    private Vector3 _targetPosition;
-    private float _speed;
-    private float _offset;
-    private Vector3 _offsetVector;
-    private bool _isReachEndPoint = false;
+    private NavMeshAgent _agent;
+    private Character _character;
+    private float _timeForDistanceReconculate = 1;
+    private Coroutine _moveCorounine;
+
+    public bool IsMoveToTarget { get; private set; }
 
     public event Action ReachedEndPoint;
 
-    public Mover(Transform transform, float speed, float offset = 0.1f)
+    public Mover(Character character)
     {
-        _speed = speed;
-        _transform = transform;
-        _offset = offset;
-        _offsetVector = new Vector3(Random.Range(-_offset, _offset), 0, 0);
+        _character = character;
+        _agent = _character.Agent;
+        _agent.speed = character.MoveSpeed;
     }
 
-    public void SetPoint(Vector3 point)
+    public void MoveToTarget(Transform target, float offset)
     {
-        _targetPosition = point;
-        ConculateTargetPointWithOffset();
-        _isReachEndPoint = false;
+        if (_moveCorounine != null)
+            _character.StopCoroutine(_moveCorounine);
+
+        _moveCorounine = _character.StartCoroutine(MoveJob(target, offset));
+        _agent.isStopped = false;
+        IsMoveToTarget = true;
     }
 
-    public void Update()
+    public void StopMove()
     {
-        if (_isReachEndPoint)
-            return;
+        if(_moveCorounine != null)
+            _character.StopCoroutine(_moveCorounine);
 
-        _transform.LookAt(_targetPosition);
-        _transform.position = Vector3.MoveTowards(_transform.position, _targetPosition, Time.deltaTime * _speed);
+        _agent.ResetPath();
+        _moveCorounine = null;
+        IsMoveToTarget = false;
+    }
 
-        if (Vector3.Distance(_transform.position, _targetPosition) <= _offset)
+    private IEnumerator MoveJob(Transform target, float offset)
+    {
+        WaitForSeconds time = new WaitForSeconds(_timeForDistanceReconculate);
+
+        while (Vector3.Distance(target.position, _character.transform.position) > offset)
         {
-            ReachedEndPoint?.Invoke();
-            _isReachEndPoint = true;
+            yield return time;
+
+            _agent.SetDestination(target.position);
         }
-    }
-
-    private void ConculateTargetPointWithOffset()
-    {
-        Vector3 targetPositionWithOffset = _transform.InverseTransformPoint(_targetPosition);
-        targetPositionWithOffset += _offsetVector;
-        targetPositionWithOffset = _transform.TransformPoint(targetPositionWithOffset);
-
-        _targetPosition = targetPositionWithOffset;
+        ReachedEndPoint?.Invoke();
+        _agent.ResetPath();
     }
 }

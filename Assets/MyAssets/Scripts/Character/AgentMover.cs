@@ -13,6 +13,8 @@ public class AgentMover
     private float _offset = 1f;
     private Character _character;
 
+    public bool IsMoving { get => _isMoving; }
+
     public event Action ReachedEndPoint;
 
     public AgentMover(NavMeshAgent agent, Character character, Path path)
@@ -61,6 +63,7 @@ public class AgentMover
     public void Pause()
     {
         _agent.isStopped = true;
+        _isMoving = false;
     }
 
     public void Resume()
