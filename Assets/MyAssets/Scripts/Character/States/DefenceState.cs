@@ -7,7 +7,7 @@ public class DefenceState : IState
     private IStateSwitcher _stateMachine;
     private Path _path;
     private NavMeshAgent _mover;
-    private List<Character> _enemies;
+    private List<ITargetable> _enemies;
     private float _offset = 1.5f;
 
     public DefenceState(Character character, IStateSwitcher stateMachine)
@@ -32,11 +32,11 @@ public class DefenceState : IState
 
     public void Update()
     {
-        foreach (Character enemy in _enemies)
+        foreach (var enemy in _enemies)
         {
-            if (enemy.IsCanTakeDamage)
+            if (enemy is Character character && character.IsCanTakeDamage)
             {
-                _character.TryAttack(enemy);
+                _character.TryAttack(character);
                 return;
             }
         }

@@ -7,7 +7,7 @@ public class AttackWeakElementState : IState
     private IStateSwitcher _stateMachine;
     private Path _path;
     private AgentMover _mover;
-    private List<Character> _enemies;
+    private List<ITargetable> _enemies;
     private float _offset = 1.5f;
     private Elements _weekElement;
 
@@ -35,17 +35,20 @@ public class AttackWeakElementState : IState
 
     public void Update()
     {
-        foreach (Character enemy in _enemies)
+        foreach (var target in _enemies)
         {
-            if (enemy.Element != _weekElement)
-                continue;
-
-            _mover.Pause();
-
-            if (enemy.IsCanTakeDamage)
+            if (target is Character enemy)
             {
-                _character.TryAttack(enemy);
-                return;
+                if (enemy.Element != _weekElement)
+                    continue;
+
+                _mover.Pause();
+
+                if (enemy.IsCanTakeDamage)
+                {
+                    _character.TryAttack(enemy);
+                    return;
+                }
             }
         }
         _mover.Resume();

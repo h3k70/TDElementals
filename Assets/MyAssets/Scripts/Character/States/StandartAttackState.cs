@@ -7,7 +7,7 @@ public class StandartAttackState : IState
     private IStateSwitcher _stateMachine;
     private Path _path;
     private AgentMover _mover;
-    private List<Character> _enemies;
+    private List<ITargetable> _enemies;
     private float _offset = 1.5f;
 
     public StandartAttackState(Character character, IStateSwitcher stateMachine)
@@ -33,14 +33,14 @@ public class StandartAttackState : IState
 
     public void Update()
     {
-        foreach(Character enemy in _enemies)
+        foreach(var enemy in _enemies)
         {
             if (_mover.IsMoving)
                 _mover.Pause();
 
-            if (enemy.IsCanTakeDamage)
+            if (enemy is Character character && character.IsCanTakeDamage)
             {
-                _character.TryAttack(enemy);
+                _character.TryAttack(character);
                 return;
             }
         }

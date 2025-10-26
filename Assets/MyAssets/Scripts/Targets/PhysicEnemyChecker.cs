@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 public class PhysicEnemyChecker : IEnemyChecker
 {
-    private List<Character> _enemies = new();
-    private List<Character> _enemiesOnPath = new();
+    private List<ITargetable> _enemies = new();
+    private List<ITargetable> _enemiesOnPath = new();
 
-    public List<Character> Enemies { get => _enemies; }
+    public List<ITargetable> Enemies { get => _enemies; }
 
-    public PhysicEnemyChecker(List<Character> enemiesOnPath)
+    public PhysicEnemyChecker(List<ITargetable> enemiesOnPath)
     {
         _enemiesOnPath = enemiesOnPath;
     }

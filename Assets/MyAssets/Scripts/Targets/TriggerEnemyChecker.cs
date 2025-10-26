@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class TriggerEnemyChecker : MonoBehaviour, IEnemyChecker
 {
-    private List<Character> _enemies = new();
+    private List<ITargetable> _enemies = new();
 
-    public List<Character> Enemies { get => _enemies; }
+    public List<ITargetable> Enemies { get => _enemies; }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Character enemy))
+        if (other.TryGetComponent(out ITargetable enemy))
         {
             _enemies.Add(enemy);
         }
@@ -17,7 +17,7 @@ public class TriggerEnemyChecker : MonoBehaviour, IEnemyChecker
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Character enemy))
+        if (other.TryGetComponent(out ITargetable enemy))
         {
             _enemies.Remove(enemy);
         }
