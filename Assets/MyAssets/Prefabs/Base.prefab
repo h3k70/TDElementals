@@ -101,13 +101,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 3841003cc75e4d14095266f25524e0d2, type: 3}
   _element: 0
   _charactersPrefabs:
-  - {fileID: 717645257508591788, guid: 357853a044ffddf459c0a2779e4d7003, type: 3}
-  - {fileID: 4121681500887632269, guid: 5f9c6099d7ed34449ae8a34d8c254660, type: 3}
-  - {fileID: 8045532245458078746, guid: 58ec867e54d7fec4e9011090acb7c8ed, type: 3}
-  - {fileID: 8423058121153291780, guid: 747dd3695f8b0ea499c5795eb3beaca3, type: 3}
+  - {fileID: 4878152612737596344, guid: 357853a044ffddf459c0a2779e4d7003, type: 3}
+  - {fileID: 8319305229583641241, guid: 5f9c6099d7ed34449ae8a34d8c254660, type: 3}
+  - {fileID: 2729255628495122190, guid: 58ec867e54d7fec4e9011090acb7c8ed, type: 3}
+  - {fileID: 4513607109259724048, guid: 747dd3695f8b0ea499c5795eb3beaca3, type: 3}
   _selectCollider: {fileID: 0}
   _charactersForCards: []
 --- !u!135 &2976342375154434041

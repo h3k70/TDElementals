@@ -190,7 +190,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4771327744921155120}
-  - component: {fileID: 2590931610258585019}
+  - component: {fileID: 7616692983691089583}
   - component: {fileID: 3168510300479189456}
   - component: {fileID: 7661899267297425571}
   - component: {fileID: 8817929096828198055}
@@ -226,7 +226,7 @@ Transform:
   - {fileID: 1887555957347448948}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2590931610258585019
+--- !u!114 &7616692983691089583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,20 +235,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5455940782852663380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f75dffd990bcfe4b8c38511d02c6dee, type: 3}
+  m_Script: {fileID: 11500000, guid: 2aa70fcd8bc68eb4f9d3bba8e35e2dc4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Character
+  m_EditorClassIdentifier: Assembly-CSharp::Hero
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
   _health: 4
   _maxHealth: 4
   _regenHpValue: 0
-  _icon: {fileID: 21300000, guid: caa516cdb721dd143bbc8000ca78d50a, type: 3}
+  _icon: {fileID: 21300000, guid: a4e473809833d2144bb4116073e28e68, type: 3}
   _moveSpeed: 0.8
-  _attackRate: 1.2
+  _attackRate: 1
   _damage: 1
-  _cost: 5
+  _cost: 10
   _element: 0
   _animator: {fileID: 3942999045789797706}
   _netAnimator: {fileID: 5375835532913073868}
@@ -430,7 +430,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _character: {fileID: 2590931610258585019}
+  _character: {fileID: 7616692983691089583}
   _allSkills: []
   _currentSkills: []
   _autoAtack: {fileID: 3495395462446860233}
@@ -696,7 +696,7 @@ PrefabInstance:
     - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: _character
       value: 
-      objectReference: {fileID: 2590931610258585019}
+      objectReference: {fileID: 7616692983691089583}
     - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: _buffImagePref
       value: 

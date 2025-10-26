@@ -6,7 +6,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 
-public class Base : NetworkBehaviour, IDamageable, ISelectable
+public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
 {
     [SerializeField] private Sprite _icon;
     [SerializeField] private Elements _element;
@@ -18,7 +18,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     [SyncVar] private float _battlePoints = 0;
     [SyncVar] private float _maxUnits = 1;
 
-    [SerializeField] private List<Character> _charactersForCards = new List<Character>();
+    private List<Character> _charactersForCards = new List<Character>();
     private float _battlePointsTakeRate = 30;
     private float _battlePointsTakeNum = 10;
     private float _spawnUnitDeleyPoint = 0;
@@ -51,6 +51,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable
     public Path LeftPath { get => _leftPath; }
     public Path RightPath { get => _rightPath; }
     public Character SelectedCardUnit { get { return _selectedCardUnit; } set { _selectedCardUnit = value; } }
+    public Transform Transform => transform;
 
     public event Action<IDamageable> BeforDamageTaked;
     public event Action<IDamageable, float> DamageTaked;

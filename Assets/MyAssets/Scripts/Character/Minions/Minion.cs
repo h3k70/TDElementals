@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Minion : MonoBehaviour
+public class Minion : Character
 {
 
 }

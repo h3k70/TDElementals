@@ -108,6 +108,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterElementEarth
       objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _damage
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _element
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _maxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _attackRate
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _regenHpValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7661899267297425571, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: sceneId
       value: 0
