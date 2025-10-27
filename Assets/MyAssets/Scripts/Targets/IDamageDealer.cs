@@ -7,4 +7,5 @@ public interface IDamageDealer
     public GameObject Self { get; }
 
     public bool TryAttack(IDamageable target);
+    public void DealDamage(float value, GameObject damageable);
 }

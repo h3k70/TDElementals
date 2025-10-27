@@ -53,8 +53,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
     public Character SelectedCardUnit { get { return _selectedCardUnit; } set { _selectedCardUnit = value; } }
     public Transform Transform => transform;
 
-    public event Action<IDamageable> BeforDamageTaked;
-    public event Action<IDamageable, float> DamageTaked;
+    public event Action<Damage> BeforDamageTaked;
+    public event Action<Damage> DamageTaked;
     public event Action Destroed;
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -118,8 +118,11 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
 
     public void TakeDamage(Damage damage)
     {
+        if (isServer == false)
+            return;
+
         TempDamageValue = damage.Value;
-        BeforDamageTaked?.Invoke(this);
+        BeforDamageTaked?.Invoke(damage);
 
         if (TempDamageValue > 0)
         {
@@ -131,8 +134,8 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
                 Health = 0;
                 Destroed?.Invoke();
             }
-            DamageTaked?.Invoke(this, damage.Value);
-            RpcDamageTaked(damage.Value);
+            DamageTaked?.Invoke(damage);
+            RpcDamageTaked(damage.Value, damage.DamageDealer.Self, damage.Damageable.Self);
         }
     }
 
@@ -327,9 +330,10 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
     }
 
     [ClientRpc]
-    private void RpcDamageTaked(float damage)
+    private void RpcDamageTaked(float value, GameObject damageDealer, GameObject damageable)
     {
-        DamageTaked?.Invoke(this, damage);
+        Damage damage = new(value, damageDealer.GetComponent<IDamageDealer>(), damageable.GetComponent<IDamageable>());
+        DamageTaked?.Invoke(damage);
     }
 
     [ClientRpc]

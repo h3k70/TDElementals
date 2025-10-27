@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class AASliceAttack : Skill
 {
+    private float _damage;
     private bool _isAnimPlaying;
     private IDamageable _target;
 
     public void AnimEventAASliceAttack()
     {
         if (_target != null)
-            Character.DealDamage(_target.Self);
+            Character.DealDamage(_damage, _target.Self);
     }
 
     public void AnimEventAASliceAttackEnded()
@@ -19,8 +20,8 @@ public class AASliceAttack : Skill
 
     protected override IEnumerator CastJob(ITargetable target)
     {
+        _damage = Character.Damage;
         transform.LookAt(target.Transform.position);
-        Character.Animator.SetTrigger("Slice Attack");
         Character.NetAnimator.SetTrigger("Slice Attack");
         _isAnimPlaying = true;
 

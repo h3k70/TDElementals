@@ -9,8 +9,8 @@ public interface IDamageable
     public bool IsCanTakeDamage { get; }
     public Elements Element { get; }
 
-    public event Action<IDamageable> BeforDamageTaked;
-    public event Action<IDamageable, float> DamageTaked;
+    public event Action<Damage> BeforDamageTaked;
+    public event Action<Damage> DamageTaked;
 
     public void TakeDamage(Damage damage);
 }

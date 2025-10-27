@@ -26,5 +26,17 @@ public class SkillManager : NetworkBehaviour
         {
             skill.Init(_character);
         }
+
+        _character.CharacterDied += OnCharacterDied;
+    }
+
+    private void OnCharacterDied(Character character)
+    {
+        _autoAtack.TryCancel();
+
+        foreach (var item in _allSkills)
+        {
+            item.TryCancel();
+        }
     }
 }

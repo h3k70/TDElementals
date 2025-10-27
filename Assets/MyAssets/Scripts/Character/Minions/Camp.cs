@@ -1,16 +1,28 @@
+using System;
+using System.Collections.Generic;
+using Mirror;
+using UnityEditor.Rendering;
 using UnityEngine;
 
-public class Camp : MonoBehaviour
+public class Camp : NetworkBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private List<Minion> _minionsPrefs;
 
-    // Update is called once per frame
-    void Update()
+    private List<Minion> _minions = new();
+
+    public List<Minion> Minions { get => _minions; }
+
+    public event Action<Minion> MinionSpawned;
+
+    public void Spawn()
     {
-        
+        if (isServer == false)
+            return;
+
+        var minion = Instantiate(_minionsPrefs[0], transform);
+        NetworkServer.Spawn(minion.gameObject);
+        _minions.Add(minion);
+
+        MinionSpawned?.Invoke(minion);
     }
 }

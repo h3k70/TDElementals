@@ -17,6 +17,8 @@ public class Game : NetworkBehaviour
     [SerializeField] private List<Path> _paths2;
     [Space(25)]
     [SerializeField] private GameplayUI _gameplayUI;
+    [Space(25)]
+    [SerializeField] private List<Camp> _camps;
 
     private Base _base1;
     private Base _base2;
@@ -76,6 +78,11 @@ public class Game : NetworkBehaviour
 
         _base1.CharacterSpawned += OnCharacterSpawned;
         _base2.CharacterSpawned += OnCharacterSpawned;
+        foreach (var camp in _camps)
+        {
+            camp.MinionSpawned += OnCharacterSpawned;
+            camp.Spawn();
+        }
     }
 
 
@@ -249,7 +256,9 @@ public class Game : NetworkBehaviour
         var damagavle = damage.Damageable.Self.GetComponent<Character>();
         damagavle.Died -= OnCharacterDied;
         var character = damage.DamageDealer.Self.GetComponent<Character>();
-        character.SelfCard.AddExp(damagavle.CurrentLVL + _expForKill);
+
+        if (character is Hero)
+            character.SelfCard.AddExp(damagavle.CurrentLVL + _expForKill);
     }
 
     [ClientRpc]

@@ -255,6 +255,7 @@ MonoBehaviour:
   _selectCollider: {fileID: 3168510300479189456}
   _agent: {fileID: 5752030166190187066}
   _skills: {fileID: 4391955469352361100}
+  _netTransform: {fileID: 8817929096828198055}
 --- !u!135 &3168510300479189456
 SphereCollider:
   m_ObjectHideFlags: 0

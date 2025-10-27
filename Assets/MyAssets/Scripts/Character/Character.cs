@@ -28,14 +28,15 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [SerializeField] private Collider _selectCollider;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private SkillManager _skills;
+    [SerializeField] private NetworkTransformUnreliable _netTransform;
 
+    protected IStateSwitcher _stateMachine;
     private float _regenHpRate = 1f;
     private float _addExpMultipleForNextLvl = 5;
     private float _addCostForNextLvl = 5;
     private float _costBase = 10;
     private float _nextAttackTime = 0f;
     private IEnemyChecker _enemyChecker;
-    private CharacterStateMachine _stateMachine;
     private Path _path;
     private List<Path> _paths;
     private UnitCommands _command;
@@ -48,9 +49,9 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public float TempDamageValue { get; set; }
     public float Health { get { return _health; } private set { HPChanged?.Invoke(Health, value); RpcHPChanged(Health, value); _health = value; } }
     public bool IsCanTakeDamage => !_isDead;
-    public Path Path => _path;
+    public Path Path { get => _path; protected set => _path = value; }
     public float MoveSpeed => _moveSpeed;
-    public IEnemyChecker EnemyChecker => _enemyChecker;
+    public IEnemyChecker EnemyChecker { get => _enemyChecker; protected set => _enemyChecker = value; }
     public GameObject Self => gameObject;
     public Character SelfCard { get; set; }
     public List<Path> Paths { get => _paths; set => _paths = value; }
@@ -68,11 +69,13 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public NetworkAnimator NetAnimator { get => _netAnimator; }
     public bool IsMovingToTarget { get { return _mover.IsMoveToTarget; } }
     public Transform Transform => transform;
+    public UnitCommands CurrentCommand { get => _command; protected set => _command = value; }
+    public NetworkTransformUnreliable NetTransform { get => _netTransform; }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
-    public event Action<IDamageable> BeforDamageTaked;
-    public event Action<IDamageable, float> DamageTaked;
+    public event Action<Damage> BeforDamageTaked;
+    public event Action<Damage> DamageTaked;
     public event Action<Damage> Died;
     public event Action<Character> CharacterDied;
     public event Action<float, float> HPChanged;
@@ -83,41 +86,33 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<Buffs> BuffAdded;
     public event Action<Buffs> BuffRemoved;
 
+    protected virtual void OnStart()
+    {
+
+    }
+
     private void Start()
     {
         if (isServer)
         {
             StartCoroutine(RegenHPJob());
         }
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
 
         HPChanged?.Invoke(_health, _health);
         MaxHPChanged?.Invoke(_maxHealth, _maxHealth);
         _skills.Init();
-
-        if (isOwned == false || Game.Instance.OwnerBase == null)
-        {
-            return;
-        }
-
-        _path = Game.Instance.OwnerBase.CurrentPath;
-
-        _enemyChecker = GetComponentInChildren<IEnemyChecker>();
-        _stateMachine = new(this);
-        _command = UnitCommands.MoveAndAttak;
         _mover = new(this);
+
+        OnStart();
     }
 
     private void Update()
     {
-        if (isOwned == false || _isDead)
+        if (_isDead)
             return;
 
-        _stateMachine.Update();
+        if (_stateMachine != null)
+            _stateMachine.Update();
     }
 
     public void Deselect()
@@ -132,8 +127,11 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
     public void TakeDamage(Damage damage)
     {
+        if (isServer == false)
+            return;
+
         TempDamageValue = damage.Value;
-        BeforDamageTaked?.Invoke(this);
+        BeforDamageTaked?.Invoke(damage);
 
         if (TempDamageValue > 0)
         {
@@ -145,9 +143,10 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
                 Health = 0;
                 Died?.Invoke(damage);
                 RpcDied();
+                StartCoroutine(DieDissolve());
             }
-            DamageTaked?.Invoke(this, damage.Value);
-            RpcDamageTaked(damage.Value);
+            DamageTaked?.Invoke(damage);
+            RpcDamageTaked(damage.Value, damage.DamageDealer.Self, damage.Damageable.Self);
         }
     }
 
@@ -348,16 +347,29 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         TakeExp(value);
     }
 
-    [Command]
-    public void DealDamage(GameObject target)
+    public void DealDamage(float value, GameObject damageable)
     {
-        Damage damage = new(_damage, this, target.GetComponent<IDamageable>());
+        if (isServer)
+        {
+            Damage damage = new(value, this, damageable.GetComponent<IDamageable>());
+        }
+        else
+        {
+            CmdDealDamage(value, damageable);
+        }
+    }
+
+    [Command]
+    public void CmdDealDamage(float value, GameObject damageable)
+    {
+        Damage damage = new(value, this, damageable.GetComponent<IDamageable>());
     }
 
     [ClientRpc]
-    private void RpcDamageTaked(float damage)
+    private void RpcDamageTaked(float value, GameObject damageDealer, GameObject damageable)
     {
-        DamageTaked?.Invoke(this, damage);
+        Damage damage = new(value, damageDealer.GetComponent<IDamageDealer>(), damageable.GetComponent<IDamageable>());
+        DamageTaked?.Invoke(damage);
     }
 
     [ClientRpc]

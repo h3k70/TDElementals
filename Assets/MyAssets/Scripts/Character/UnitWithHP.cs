@@ -20,15 +20,15 @@ public abstract class UnitWithHP : NetworkBehaviour, IDamageable
 
     public Elements Element => throw new NotImplementedException();
 
-    public event Action<IDamageable> BeforDamageTaked;
-    public event Action<IDamageable, float> DamageTaked;
+    public event Action<Damage> BeforDamageTaked;
+    public event Action<Damage> DamageTaked;
     public event Action<Damage> Died;
     public event Action<float, float> HPChanged;
 
     public void TakeDamage(Damage damage)
     {
         TempDamageValue = damage.Value;
-        BeforDamageTaked?.Invoke(this);
+        BeforDamageTaked?.Invoke(damage);
 
         if (TempDamageValue > 0)
         {
@@ -40,15 +40,16 @@ public abstract class UnitWithHP : NetworkBehaviour, IDamageable
                 Health = 0;
                 Died?.Invoke(damage);
             }
-            DamageTaked?.Invoke(this, damage.Value);
-            RpcDamageTaked(damage.Value);
+            DamageTaked?.Invoke(damage);
+            RpcDamageTaked(damage.Value, damage.DamageDealer.Self, damage.Damageable.Self);
         }
     }
 
     [ClientRpc]
-    private void RpcDamageTaked(float damage)
+    private void RpcDamageTaked(float value, GameObject damageDealer, GameObject damageable)
     {
-        DamageTaked?.Invoke(this, damage);
+        Damage damage = new(value, damageDealer.GetComponent<IDamageDealer>(), damageable.GetComponent<IDamageable>());
+        DamageTaked?.Invoke(damage);
     }
 
     [ClientRpc]

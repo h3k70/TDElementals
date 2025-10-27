@@ -18,8 +18,8 @@ public class BaseSubUI : MonoBehaviour
         transform.LookAt(Camera.main.transform.position);
     }
 
-    private void OnDamageTaked(IDamageable damageable, float damage)
+    private void OnDamageTaked(Damage damage)
     {
-        _popText.Show("-" + damage.ToString("0.0"));
+        _popText.Show("-" + damage.Value.ToString("0.0"));
     }
 }
