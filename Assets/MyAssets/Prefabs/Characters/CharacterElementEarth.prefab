@@ -110,11 +110,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _damage
-      value: 50
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _health
-      value: 200
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _element
@@ -122,7 +122,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _maxHealth
-      value: 200
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _moveSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _attackRate

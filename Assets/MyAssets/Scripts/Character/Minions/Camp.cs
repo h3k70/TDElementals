@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEditor.Rendering;
@@ -9,6 +10,7 @@ public class Camp : NetworkBehaviour
     [SerializeField] private List<Minion> _minionsPrefs;
 
     private List<Minion> _minions = new();
+    private Coroutine _spawnCoroutine;
 
     public List<Minion> Minions { get => _minions; }
 
@@ -16,13 +18,28 @@ public class Camp : NetworkBehaviour
 
     public void Spawn()
     {
-        if (isServer == false)
-            return;
+        if (_spawnCoroutine == null)
+            _spawnCoroutine = StartCoroutine(SpawnJob());
+    }
 
-        var minion = Instantiate(_minionsPrefs[0], transform);
-        NetworkServer.Spawn(minion.gameObject);
-        _minions.Add(minion);
+    private IEnumerator SpawnJob()
+    {
+        while (true)
+        {
+            yield return null;
 
-        MinionSpawned?.Invoke(minion);
+            _minions.RemoveAll(item => item == null);
+
+            
+            if (_minions.Count <= 0)
+            {
+                var minion = Instantiate(_minionsPrefs[0], transform);
+                NetworkServer.Spawn(minion.gameObject);
+                _minions.Add(minion);
+
+                MinionSpawned?.Invoke(minion);
+            }
+            Debug.Log(_minions[0]);
+        }
     }
 }

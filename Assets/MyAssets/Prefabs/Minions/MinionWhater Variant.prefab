@@ -1479,8 +1479,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: c49eb79c795148a47af3a2b5d9571474, type: 2}
     - target: {fileID: 7382230484261600879, guid: 64627160dc416714595c52a0524e0a14, type: 3}
+      propertyPath: _health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382230484261600879, guid: 64627160dc416714595c52a0524e0a14, type: 3}
       propertyPath: _element
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382230484261600879, guid: 64627160dc416714595c52a0524e0a14, type: 3}
+      propertyPath: _maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382230484261600879, guid: 64627160dc416714595c52a0524e0a14, type: 3}
+      propertyPath: _regenHpValue
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
