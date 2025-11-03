@@ -105,6 +105,8 @@ public class Game : NetworkBehaviour
         _gameplayUI.SwichLeftPathButton.onClick.AddListener(OnSwichLeftPath);
         _gameplayUI.SwichRightPathButton.onClick.AddListener(OnSwichRightPath);
 
+        _gameplayUI.KillLogManagerUI.Init(_base1, _base2);
+
         foreach (var item in _gameplayUI.BuffButtons)
             item.Init(_ownerBase);
 
@@ -164,7 +166,6 @@ public class Game : NetworkBehaviour
         {
             _ownerBase.TrySpawnUnit(_ownerBase.SelectedForSpawnUnit, card.Character.Cost);
         }
-
         _ownerBase.SelectedForSpawnUnit = card.CharacterPref;
         _ownerBase.SelectedCardUnit = card.Character;
     }

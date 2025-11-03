@@ -575,7 +575,7 @@ MonoBehaviour:
   editorAutoStart: 1
   sendRate: 60
   offlineScene: Assets/MyAssets/Scenes/Offline.unity
-  onlineScene: Assets/MyAssets/Scenes/Game.unity
+  onlineScene: Assets/MyAssets/Scenes/GameNewMap.unity
   offlineSceneLoadDelay: 0
   transport: {fileID: 1508417310}
   networkAddress: localhost
@@ -595,7 +595,6 @@ MonoBehaviour:
   - {fileID: 2064624544852442091, guid: 747dd3695f8b0ea499c5795eb3beaca3, type: 3}
   - {fileID: 1766707097708403805, guid: 64627160dc416714595c52a0524e0a14, type: 3}
   - {fileID: 7049190496440940762, guid: c6c5e4652d42f7946bcefadf1b2c0479, type: 3}
-  - {fileID: 8487373958459058504, guid: 323fdf7666be2544b89032ba90b661bb, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2

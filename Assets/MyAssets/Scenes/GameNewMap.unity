@@ -4820,6 +4820,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e44c46c7444e744090b98d08f075a3c, type: 3}
+--- !u!114 &966716142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6962958599880718800, guid: 5e44c46c7444e744090b98d08f075a3c, type: 3}
+  m_PrefabInstance: {fileID: 966716141}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f0195362fba0ad4b829be1043442d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayUI
 --- !u!4 &970570516 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8577889201704162167, guid: ad81c1dd381d2974ba4fefcb876b458b, type: 3}
@@ -6271,7 +6282,7 @@ MonoBehaviour:
   _paths2:
   - {fileID: 475640447}
   - {fileID: 1005092186}
-  _gameplayUI: {fileID: 0}
+  _gameplayUI: {fileID: 966716142}
   _camps: []
 --- !u!4 &1316936149
 Transform:

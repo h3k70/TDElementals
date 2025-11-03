@@ -13,6 +13,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private TMP_Text _buttlePoints;
     [SerializeField] private UnitCommandUI _unitCommandUI;
     [SerializeField] private List<BuffButtonUI> _buffButtons;
+    [SerializeField] private KillLogManagerUI _killLogManagerUI;
 
     public SelectUnitPanelUI UnitPanelUI => _unitPanelUI;
 
@@ -21,6 +22,7 @@ public class GameplayUI : MonoBehaviour
     public TMP_Text ButtlePoints { get => _buttlePoints; }
     public UnitCommandUI UnitCommandUI { get => _unitCommandUI; }
     public List<BuffButtonUI> BuffButtons { get => _buffButtons; }
+    public KillLogManagerUI KillLogManagerUI { get => _killLogManagerUI; }
 
     public void OnBattlePointsChanged(float oldValue, float newValue)
     {
