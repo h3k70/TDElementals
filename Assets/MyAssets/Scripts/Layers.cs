@@ -9,5 +9,6 @@ class Layers
     public static int EnemyMask => LayerMask.GetMask(_enemy);
     public static int Ally => LayerMask.NameToLayer(_ally);
     public static int AllyMask => LayerMask.GetMask(_ally);
+    public static int AllyAndEnemy => LayerMask.GetMask(_ally, _enemy);
 }
 

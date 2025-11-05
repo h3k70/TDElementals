@@ -172,13 +172,36 @@ public class Game : NetworkBehaviour
 
     private void OnSubSelected(ISelectable selectable)
     {
-        if (selectable is Path path && _selector.CurrentSelectablsUnit.Count > 0)
+        if (selectable is Path path)
         {
             foreach (var item in _selector.CurrentSelectablsUnit)
             {
                 if (item.Self.TryGetComponent(out Character character))
                 {
                     character.SetPath(path);
+                }
+            }
+        }
+        else if (selectable is Base base1)
+        {
+            if (base1 == _ownerBase)
+            {
+                foreach (var item in _selector.CurrentSelectablsUnit)
+                {
+                    if (item.Self.TryGetComponent(out Character character))
+                    {
+                        character.SetMode(UnitCommands.Defense);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in _selector.CurrentSelectablsUnit)
+                {
+                    if (item.Self.TryGetComponent(out Character character))
+                    {
+                        character.SetMode(UnitCommands.MoveAndAttak);
+                    }
                 }
             }
         }

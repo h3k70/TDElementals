@@ -20,7 +20,7 @@ public class CharacterStateMachine : IStateSwitcher
             new AttackWeakElementState(character, this)
         };
 
-        _currentState = _states[0];
+        _currentState = _states[2];
         _currentState.Enter();
     }
 

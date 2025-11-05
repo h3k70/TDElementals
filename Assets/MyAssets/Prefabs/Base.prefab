@@ -109,7 +109,6 @@ MonoBehaviour:
   - {fileID: 2729255628495122190, guid: 58ec867e54d7fec4e9011090acb7c8ed, type: 3}
   - {fileID: 4513607109259724048, guid: 747dd3695f8b0ea499c5795eb3beaca3, type: 3}
   _selectCollider: {fileID: 0}
-  _charactersForCards: []
 --- !u!135 &2976342375154434041
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -125,11 +124,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.8
+  m_Radius: 2.25
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &8229032359951866922
 MonoBehaviour:

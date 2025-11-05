@@ -69,7 +69,7 @@ public class Selector
 
         Ray ray = _camera.ScreenPointToRay(context.ReadValue<Vector2>());
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, _rayDistance, _layerMask) && hitInfo.collider.TryGetComponent(out ISelectable unit))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, _rayDistance, Layers.AllyAndEnemy) && hitInfo.collider.TryGetComponent(out ISelectable unit))
         {
             SubSelected?.Invoke(unit);
         }
