@@ -67,10 +67,11 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public NavMeshAgent Agent { get => _agent; }
     public Animator Animator { get => _animator; }
     public NetworkAnimator NetAnimator { get => _netAnimator; }
-    public bool IsMovingToTarget { get { return _mover.IsMoveToTarget; } }
+    public bool IsMovingToTarget { get; private set; }
     public Transform Transform => transform;
     public UnitCommands CurrentCommand { get => _command; protected set => _command = value; }
     public NetworkTransformUnreliable NetTransform { get => _netTransform; }
+    public Mover Mover { get => _mover; }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -194,15 +195,29 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
             {
                 _target = targetable;
                 _mover.ReachedEndPoint += OnMoverReachedTarget;
-                _mover.MoveToTarget(targetable.Transform, _skills.AutoAtack.Distence);
+                IsMovingToTarget = true;
+                _mover.MoveTo(targetable.Transform, _skills.AutoAtack.Distence);
             }
             return true;
         }
         return false;
     }
 
+    public void DealDamage(float value, GameObject damageable)
+    {
+        if (isServer)
+        {
+            Damage damage = new(value, this, damageable.GetComponent<IDamageable>());
+        }
+        else
+        {
+            CmdDealDamage(value, damageable);
+        }
+    }
+
     private void OnMoverReachedTarget()
     {
+        IsMovingToTarget = false;
         _mover.ReachedEndPoint -= OnMoverReachedTarget;
         _mover.StopMove();
         _skills.AutoAtack.TryCast(_target);
@@ -345,18 +360,6 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public void CmdPayExpCost(float value)
     {
         TakeExp(value);
-    }
-
-    public void DealDamage(float value, GameObject damageable)
-    {
-        if (isServer)
-        {
-            Damage damage = new(value, this, damageable.GetComponent<IDamageable>());
-        }
-        else
-        {
-            CmdDealDamage(value, damageable);
-        }
     }
 
     [Command]
