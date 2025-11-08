@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BuffButtonUI : MonoBehaviour
 {
-    [SerializeField] private Buffs _buffType;
+    [SerializeField] private Attributes _buffType;
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _textLvl;
     [SerializeField] private TMP_Text _textBuffValue;

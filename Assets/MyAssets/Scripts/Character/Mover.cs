@@ -9,7 +9,7 @@ public class Mover
     private NavMeshAgent _agent;
     private Character _character;
     private Coroutine _moveCorounine;
-    private int _disableCounter;
+    private int _disableCounter = 0;
 
     public bool IsMove { get; private set; }
 

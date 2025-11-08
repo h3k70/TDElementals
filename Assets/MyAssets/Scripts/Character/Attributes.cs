@@ -1,4 +1,4 @@
-public enum Buffs
+public enum Attributes
 {
     Damage,
     AttackSpeed,

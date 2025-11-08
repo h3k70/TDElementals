@@ -4,12 +4,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BuffIcons", menuName = "BuffIcons")]
 class BuffIcons : ScriptableObject
 {
-    [SerializeField] private List<Buffs> _buffs = new();
+    [SerializeField] private List<Attributes> _buffs = new();
     [SerializeField] private List<Sprite> _sprite = new();
 
-    private Dictionary<Buffs, Sprite> _buffIcons = new();
+    private Dictionary<Attributes, Sprite> _buffIcons = new();
 
-    public Dictionary<Buffs, Sprite> Icons { get => _buffIcons; }
+    public Dictionary<Attributes, Sprite> Icons { get => _buffIcons; }
 
     private void OnValidate()
     {

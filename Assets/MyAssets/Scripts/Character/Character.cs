@@ -43,6 +43,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private float _percentUpAttributes = 0.1f;
     private Mover _mover;
     private ITargetable _target;
+    private int _attackDisableCounter = 0;
+    private bool _isAttackEnabled = true;
 
     public Sprite Icon => _icon;
     public bool IsSelected { get; private set; }
@@ -84,8 +86,10 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public event Action<int, int> LVLChanged;
     public event Action<float, float> ExpChanged;
     public event Action<float> CostChanged;
-    public event Action<Buffs> BuffAdded;
-    public event Action<Buffs> BuffRemoved;
+    public event Action<Attributes> BuffAdded;
+    public event Action<Attributes> BuffRemoved;
+    public event Action<States, float> StateAdded;
+    public event Action<States> StateRemoved;
 
     protected virtual void OnStart()
     {
@@ -189,6 +193,9 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
     public bool TryAttack(IDamageable damageble)
     {
+        if (_isAttackEnabled == false)
+            return false;
+
         if (_skills.AutoAtack.IsReady && IsMovingToTarget == false)
         {
             if (damageble is ITargetable targetable)
@@ -287,17 +294,36 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         RpcExpChanged(_currentExp, _expForNextLvl);
     }
 
-    public void Buff(Buffs buff, float value)
+    public void AddState(States state, float time)
+    {
+        switch (state)
+        {
+            case States.Stun:
+                _mover.Disable();
+                _isAttackEnabled = false;
+                _attackDisableCounter++;
+                break;
+            case States.Freeze:
+                _isAttackEnabled = false;
+                _attackDisableCounter++;
+                break;
+        }
+        StateAdded?.Invoke(state, time);
+        RpcStateAdded(state, time);
+        StartCoroutine(StateRemoveDeleyJob(state, time));
+    }
+
+    public void BuffAttribute(Attributes buff, float value)
     {
         switch (buff)
         {
-            case Buffs.Damage:
+            case Attributes.Damage:
                 _damage *= value;
                 break;
-            case Buffs.AttackSpeed:
+            case Attributes.AttackSpeed:
                 _attackRate /= value;
                 break;
-            case Buffs.MoveSpeed:
+            case Attributes.MoveSpeed:
                 _moveSpeed *= value;
                 break;
             default:
@@ -307,17 +333,17 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         RpcBuffAdded(buff);
     }
 
-    public void Debuff(Buffs buff, float value)
+    public void RemoveBuffAttribute(Attributes buff, float value)
     {
         switch (buff)
         {
-            case Buffs.Damage:
+            case Attributes.Damage:
                 _damage /= value;
                 break;
-            case Buffs.AttackSpeed:
+            case Attributes.AttackSpeed:
                 _attackRate *= value;
                 break;
-            case Buffs.MoveSpeed:
+            case Attributes.MoveSpeed:
                 _moveSpeed /= value;
                 break;
             default:
@@ -325,6 +351,28 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         }
         BuffRemoved?.Invoke(buff);
         RpcBuffRemoved(buff);
+    }
+
+    private void RemoveState(States state)
+    {
+        switch (state)
+        {
+            case States.Stun:
+                _mover.Enable();
+                _attackDisableCounter--;
+
+                if (_attackDisableCounter == 0)
+                    _isAttackEnabled = true;
+                break;
+            case States.Freeze:
+                _attackDisableCounter--;
+
+                if (_attackDisableCounter == 0)
+                    _isAttackEnabled = true;
+                break;
+        }
+        StateRemoved?.Invoke(state);
+        RpcStateRemoved(state);
     }
 
     private IEnumerator RegenHPJob()
@@ -354,6 +402,12 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         yield return new WaitForSeconds(5);
         transform.DOLocalMoveY(-1, 15);
         Destroy(gameObject, 15);
+    }
+
+    private IEnumerator StateRemoveDeleyJob(States state, float time)
+    {
+        yield return new WaitForSeconds(time);
+        RemoveState(state);
     }
 
     [Command]
@@ -425,14 +479,26 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     }
 
     [ClientRpc]
-    private void RpcBuffAdded(Buffs buff)
+    private void RpcBuffAdded(Attributes buff)
     {
         BuffAdded?.Invoke(buff);
     }
 
     [ClientRpc]
-    private void RpcBuffRemoved(Buffs buff)
+    private void RpcBuffRemoved(Attributes buff)
     {
         BuffRemoved?.Invoke(buff);
+    }
+
+    [ClientRpc]
+    private void RpcStateAdded(States state, float time)
+    {
+        StateAdded?.Invoke(state, time);
+    }
+
+    [ClientRpc]
+    private void RpcStateRemoved(States state)
+    {
+        StateRemoved?.Invoke(state);
     }
 }

@@ -150,13 +150,13 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
         return false;
     }
 
-    public void BuffUnitInRadius(Buffs buff, float value, float time)
+    public void BuffUnitInRadius(Attributes buff, float value, float time)
     {
         List<Character> list = new List<Character>();
 
         foreach (Character character in _characters)
         {
-            character.Buff(buff, value);
+            character.BuffAttribute(buff, value);
             list.Add(character);
         }
         StartCoroutine(DebufUnitsJob(buff, value, list, time));
@@ -231,7 +231,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
         }
     }
 
-    private IEnumerator BuffUnitInRadiusJob(Buffs buff, float value, float time)
+    private IEnumerator BuffUnitInRadiusJob(Attributes buff, float value, float time)
     {
         List<Character> list = new List<Character>();
         float radius = 10;
@@ -247,7 +247,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
                     if (list.Contains(character))
                     {
                         list.Remove(character);
-                        character.Debuff(buff, value);
+                        character.RemoveBuffAttribute(buff, value);
                     }
                     else
                     {
@@ -256,7 +256,7 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
                 }
                 else if (list.Contains(character) == false)
                 {
-                    character.Buff(buff, value);
+                    character.BuffAttribute(buff, value);
                     list.Add(character);
                 }
 
@@ -268,23 +268,23 @@ public class Base : NetworkBehaviour, IDamageable, ISelectable, ITargetable
 
         foreach (Character character in list)
         {
-            character.Debuff(buff, value);
+            character.RemoveBuffAttribute(buff, value);
         }
     }
 
-    private IEnumerator DebufUnitsJob(Buffs buff, float value, List<Character> list, float time)
+    private IEnumerator DebufUnitsJob(Attributes buff, float value, List<Character> list, float time)
     {
         yield return new WaitForSeconds(time);
 
         foreach (Character character in list)
         {
             if (character != null)
-                character.Debuff(buff, value);
+                character.RemoveBuffAttribute(buff, value);
         }
     }
 
     [Command]
-    public void CmdBuffUnitInRadius(Buffs buff, float value, float time)
+    public void CmdBuffUnitInRadius(Attributes buff, float value, float time)
     {
         //StartCoroutine(BuffUnitInRadiusJob(buff, value, time));
         BuffUnitInRadius(buff, value, time);

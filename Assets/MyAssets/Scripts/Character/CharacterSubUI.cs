@@ -57,14 +57,14 @@ public class CharacterSubUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnBuffAdded(Buffs buff)
+    private void OnBuffAdded(Attributes buff)
     {
         var icon = Instantiate(_buffImagePref, _buffImageContainer.transform);
         _buffImages.Add(icon);
         icon.Init(buff);
     }
 
-    private void OnBuffRemoved(Buffs buff)
+    private void OnBuffRemoved(Attributes buff)
     {
         var icon = _buffImages.FirstOrDefault(item => item.Buff == buff);
         _buffImages.Remove(icon);
