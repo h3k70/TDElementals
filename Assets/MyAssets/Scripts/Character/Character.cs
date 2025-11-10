@@ -137,6 +137,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
         TempDamageValue = damage.Value;
         BeforDamageTaked?.Invoke(damage);
+        damage.Value = TempDamageValue;
 
         if (TempDamageValue > 0)
         {
@@ -201,13 +202,39 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
             if (damageble is ITargetable targetable)
             {
                 _target = targetable;
-                _mover.ReachedEndPoint += OnMoverReachedTarget;
                 IsMovingToTarget = true;
-                _mover.MoveTo(targetable.Transform, _skills.AutoAtack.Distence);
+                _mover.ReachedEndPoint += OnMoverReachedTarget;
+                _mover.MoveTo(_target.Transform, _skills.AutoAtack.Distence);
             }
             return true;
         }
         return false;
+    }
+
+    public void CancleAutoAttack()
+    {
+        if (IsMovingToTarget)
+        {
+            _mover.ReachedEndPoint -= OnMoverReachedTarget;
+            IsMovingToTarget = false;
+        }
+        _skills.AutoAtack.TryCancel();
+    }
+
+
+    public void DisableAutoAttack()
+    {
+        _attackDisableCounter++;
+        _isAttackEnabled = false;
+        CancleAutoAttack();
+    }
+
+    public void EnableAutoAttack()
+    {
+        _attackDisableCounter--;
+
+        if (_attackDisableCounter == 0)
+            _isAttackEnabled = true;
     }
 
     public void DealDamage(float value, GameObject damageable)
@@ -227,7 +254,11 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         IsMovingToTarget = false;
         _mover.ReachedEndPoint -= OnMoverReachedTarget;
         _mover.StopMove();
-        _skills.AutoAtack.TryCast(_target);
+
+        if (_isAttackEnabled)
+        {
+            _skills.AutoAtack.TryCast(_target);
+        }
     }
 
     public void SetLVL(int lvl)
@@ -296,21 +327,8 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
 
     public void AddState(States state, float time)
     {
-        switch (state)
-        {
-            case States.Stun:
-                _mover.Disable();
-                _isAttackEnabled = false;
-                _attackDisableCounter++;
-                break;
-            case States.Freeze:
-                _isAttackEnabled = false;
-                _attackDisableCounter++;
-                break;
-        }
-        StateAdded?.Invoke(state, time);
+        AddStateLogic(state, time);
         RpcStateAdded(state, time);
-        StartCoroutine(StateRemoveDeleyJob(state, time));
     }
 
     public void BuffAttribute(Attributes buff, float value)
@@ -353,26 +371,41 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
         RpcBuffRemoved(buff);
     }
 
+    private void AddStateLogic(States state, float time)
+    {
+        switch (state)
+        {
+            case States.Stun:
+                _mover.Disable();
+                DisableAutoAttack();
+                break;
+            case States.Freeze:
+                _mover.Disable();
+                break;
+        }
+        StateAdded?.Invoke(state, time);
+        StartCoroutine(StateRemoveDeleyJob(state, time));
+    }
+
     private void RemoveState(States state)
+    {
+        RemoveStateLogic(state);
+        RpcStateRemoved(state);
+    }
+
+    private void RemoveStateLogic(States state)
     {
         switch (state)
         {
             case States.Stun:
                 _mover.Enable();
-                _attackDisableCounter--;
-
-                if (_attackDisableCounter == 0)
-                    _isAttackEnabled = true;
+                EnableAutoAttack();
                 break;
             case States.Freeze:
-                _attackDisableCounter--;
-
-                if (_attackDisableCounter == 0)
-                    _isAttackEnabled = true;
+                _mover.Enable();
                 break;
         }
         StateRemoved?.Invoke(state);
-        RpcStateRemoved(state);
     }
 
     private IEnumerator RegenHPJob()
@@ -407,7 +440,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private IEnumerator StateRemoveDeleyJob(States state, float time)
     {
         yield return new WaitForSeconds(time);
-        RemoveState(state);
+        RemoveStateLogic(state);
     }
 
     [Command]
@@ -493,12 +526,14 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     [ClientRpc]
     private void RpcStateAdded(States state, float time)
     {
+        AddStateLogic(state, time);
         StateAdded?.Invoke(state, time);
     }
 
     [ClientRpc]
     private void RpcStateRemoved(States state)
     {
+        RemoveStateLogic(state);
         StateRemoved?.Invoke(state);
     }
 }

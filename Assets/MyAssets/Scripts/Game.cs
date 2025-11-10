@@ -26,14 +26,18 @@ public class Game : NetworkBehaviour
     private NetworkConnectionToClient player1;
     private NetworkConnectionToClient player2;
     private Selector _selector;
+    private GameInputMap _input;
     private float _expForKill = 3;
 
     public Base OwnerBase { get => _ownerBase; }
+    public Selector Selector { get => _selector; }
+    public GameInputMap Input { get => _input; }
 
     [Inject]
-    public void Inject(Selector selector)
+    public void Inject(Selector selector, GameInputMap input)
     {
         _selector = selector;
+        _input = input;
     }
 
     public void Awake()

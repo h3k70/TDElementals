@@ -53,7 +53,6 @@ public abstract class Skill : NetworkBehaviour
     public virtual bool TryCast(ITargetable target)
     {
         _target = target;
-
         if (_wrapperCastCoroutine == null && IsReady && IsTargetInRadius)
         {
             _isReady = false;
@@ -66,9 +65,16 @@ public abstract class Skill : NetworkBehaviour
     
     public bool TryCancel()
     {
-        StopCorounineJob(_castCoroutine);
-        StopCorounineJob(_wrapperCastCoroutine);
-
+        if (_castCoroutine != null)
+        {
+            StopCorounineJob(_castCoroutine);
+            _castCoroutine = null;
+        }
+        if (_wrapperCastCoroutine != null)
+        {
+            StopCorounineJob(_wrapperCastCoroutine);
+            _wrapperCastCoroutine = null;
+        }
         _target = null;
         ClearData();
 
