@@ -30,6 +30,7 @@ public abstract class Skill : NetworkBehaviour
         }
     }
     public float Distence { get => _distence; }
+    public float Cooldown { get => _cooldown; protected set => _cooldown = value; }
 
     public event Action<Skill> CastStarted;
     public event Action<Skill> CastEnded;

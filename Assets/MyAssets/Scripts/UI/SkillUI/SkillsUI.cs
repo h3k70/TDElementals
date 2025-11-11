@@ -21,6 +21,12 @@ public class SkillsUI : MonoBehaviour
         _selector.Deselected += OnDeselected;
     }
 
+    private void OnDestroy()
+    {
+        _selector.Selected -= OnSelected;
+        _selector.Deselected -= OnDeselected;
+    }
+
     private void OnSelected(ISelectable selectable)
     {
         if (selectable is Character character)

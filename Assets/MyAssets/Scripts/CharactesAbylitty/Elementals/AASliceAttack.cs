@@ -20,6 +20,9 @@ public class AASliceAttack : Skill
 
     protected override IEnumerator CastJob(ITargetable target)
     {
+        Cooldown = 1 / Character.AttackRate;
+        Character.Animator.SetFloat("Attack Speed", 1 * Character.AttackRate);
+
         _damage = Character.Damage;
         transform.LookAt(target.Transform.position);
         Character.NetAnimator.SetTrigger("Slice Attack");

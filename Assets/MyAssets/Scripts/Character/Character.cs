@@ -60,7 +60,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public Elements Element => _element;
     public float Cost { get => _cost; }
     public float Damage { get => _damage; }
-    public float AttackRate { get => _attackRate; }
+    public float AttackRate { get => _attackRate; set => _attackRate = value; }
     public int CurrentLVL => _lvl;
     public int MaxLVL => 10;
     public float CurrentExp => _currentExp;
