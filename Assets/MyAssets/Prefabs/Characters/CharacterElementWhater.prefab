@@ -60,6 +60,30 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: c49eb79c795148a47af3a2b5d9571474, type: 2}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _allSkills.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_allSkills.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4426961102617108884}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_allSkills.Array.data[1]'
+      value: 
+      objectReference: {fileID: 752579976168493419}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: _currentSkills.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_currentSkills.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4426961102617108884}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_currentSkills.Array.data[1]'
+      value: 
+      objectReference: {fileID: 752579976168493419}
     - target: {fileID: 4771327744921155120, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -147,8 +171,63 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8672748348973342147, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9046809918119552138}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5455940782852663380, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4426961102617108884}
+    - targetCorrespondingSourceObject: {fileID: 5455940782852663380, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 752579976168493419}
   m_SourcePrefab: {fileID: 100100000, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+--- !u!1 &2064624544852442091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5455940782852663380, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+  m_PrefabInstance: {fileID: 6273620012737795007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4426961102617108884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064624544852442091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ce638c39192ed43bd93f7aa2a3bc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterElement.Freeze
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _name: 123
+  _description: 123
+  _icon: {fileID: -1962277354, guid: a6b2c8c63c23ba34e841d10961cfb5ce, type: 3}
+  _distence: 5
+  _cooldown: 16
+  _radius: 5
+  _stanDuration: 6
+--- !u!114 &752579976168493419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064624544852442091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c314347ce51c542a000fb5ea6bdb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterElement.Shield
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _name: 123
+  _description: 123
+  _icon: {fileID: 21300000, guid: caa516cdb721dd143bbc8000ca78d50a, type: 3}
+  _distence: 5
+  _cooldown: 13
+  _hp: 40
+  _duration: 5
 --- !u!4 &3408005034698198652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8672748348973342147, guid: 1a019261906010546a1b33a230e656a6, type: 3}
