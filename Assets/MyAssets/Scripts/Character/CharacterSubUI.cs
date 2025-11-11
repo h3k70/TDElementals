@@ -11,11 +11,13 @@ public class CharacterSubUI : MonoBehaviour
     [SerializeField] private PopText _popText;
     [SerializeField] private HPBarUI _hpBar;
     [SerializeField] private BuffIconUI _buffImagePref;
+    [SerializeField] private StateIconUI _stateImagePref;
     [SerializeField] private GameObject _buffImageContainer;
 
     private List<IDisposable> _disposabls = new();
     private SelectCircleDisplay _selectCircleDisplay;
     private List<BuffIconUI> _buffImages = new();
+    private List<StateIconUI> _stateImages = new();
 
     private void Awake()
     {
@@ -25,7 +27,9 @@ public class CharacterSubUI : MonoBehaviour
 
         _character.DamageTaked += OnDamageTaked;
         _character.CharacterDied += OnDied;
+        _character.StateAdded += OnStateAdded;
         _character.BuffAdded += OnBuffAdded;
+        _character.StateRemoved += OnStateRemoved;
         _character.BuffRemoved += OnBuffRemoved;
 
         _hpBar.Init(_character);
@@ -43,7 +47,9 @@ public class CharacterSubUI : MonoBehaviour
 
         _character.DamageTaked -= OnDamageTaked;
         _character.CharacterDied -= OnDied;
+        _character.StateAdded -= OnStateAdded;
         _character.BuffAdded -= OnBuffAdded;
+        _character.StateRemoved -= OnStateRemoved;
         _character.BuffRemoved -= OnBuffRemoved;
     }
 
@@ -68,6 +74,20 @@ public class CharacterSubUI : MonoBehaviour
     {
         var icon = _buffImages.FirstOrDefault(item => item.Buff == buff);
         _buffImages.Remove(icon);
+        Destroy(icon.gameObject);
+    }
+
+    private void OnStateAdded(States states, float arg2)
+    {
+        var icon = Instantiate(_stateImagePref, _buffImageContainer.transform);
+        _stateImages.Add(icon);
+        icon.Init(states);
+    }
+
+    private void OnStateRemoved(States states)
+    {
+        var icon = _stateImages.FirstOrDefault(item => item.Buff == states);
+        _stateImages.Remove(icon);
         Destroy(icon.gameObject);
     }
 }

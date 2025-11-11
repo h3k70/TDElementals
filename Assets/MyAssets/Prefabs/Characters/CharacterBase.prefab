@@ -703,6 +703,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7350364691119247207, guid: 3a23d2a820d27514b902044f002e8a92, type: 3}
     - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
+      propertyPath: _stateImagePref
+      value: 
+      objectReference: {fileID: -949087446129181167, guid: 4601e74784eee5f4db48ddb8986cf959, type: 3}
+    - target: {fileID: 1733498081362935045, guid: 115781b837bd156489f8acfbf5e91e2c, type: 3}
       propertyPath: _selectProjector
       value: 
       objectReference: {fileID: 5529790536497222495}

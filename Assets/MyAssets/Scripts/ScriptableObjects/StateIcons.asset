@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed77c919b265cd4f84bd8f2ad8dd4d5, type: 3}
+  m_Name: StateIcons
+  m_EditorClassIdentifier: Assembly-CSharp::StateIcons
+  _buffs: 0000000001000000
+  _sprite:
+  - {fileID: 642513862, guid: a6b2c8c63c23ba34e841d10961cfb5ce, type: 3}
+  - {fileID: -1962277354, guid: a6b2c8c63c23ba34e841d10961cfb5ce, type: 3}

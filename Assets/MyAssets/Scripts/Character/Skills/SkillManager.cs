@@ -23,6 +23,7 @@ public class SkillManager : NetworkBehaviour
 
     public event Action<Skill> SkillAdded;
     public event Action<Skill> SkillRemoved;
+    public event Action<Skill> SkillSelected;
 
     public void Init()
     {
@@ -86,16 +87,19 @@ public class SkillManager : NetworkBehaviour
     private void OnSelectSkill1AA(InputAction.CallbackContext context)
     {
         _currentSkill = AutoAtack;
+        SkillSelected?.Invoke(_currentSkill);
     }
 
     private void OnSelectSkill2(InputAction.CallbackContext context)
     {
         _currentSkill = _currentSkills[0];
+        SkillSelected?.Invoke(_currentSkill);
     }
 
     private void OnSelectSkill3(InputAction.CallbackContext context)
     {
         _currentSkill = _currentSkills[1];
+        SkillSelected?.Invoke(_currentSkill);
     }
 
     private void OnSubSelected(ISelectable selectable)

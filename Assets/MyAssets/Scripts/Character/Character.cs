@@ -74,6 +74,7 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     public UnitCommands CurrentCommand { get => _command; protected set => _command = value; }
     public NetworkTransformUnreliable NetTransform { get => _netTransform; }
     public Mover Mover { get => _mover; }
+    public SkillManager Skills { get => _skills; }
 
     public event Action<ISelectable> Selected;
     public event Action<ISelectable> Deselected;
@@ -527,13 +528,11 @@ public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDeal
     private void RpcStateAdded(States state, float time)
     {
         AddStateLogic(state, time);
-        StateAdded?.Invoke(state, time);
     }
 
     [ClientRpc]
     private void RpcStateRemoved(States state)
     {
         RemoveStateLogic(state);
-        StateRemoved?.Invoke(state);
     }
 }
