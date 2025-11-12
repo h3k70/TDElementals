@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Hero : Character
 {
     public override void OnStartClient()

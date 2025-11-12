@@ -1,6 +1,4 @@
 using System.Collections;
-using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AirElement

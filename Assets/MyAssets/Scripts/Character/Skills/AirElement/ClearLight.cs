@@ -1,7 +1,6 @@
 using System.Collections;
 using Mirror;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace AirElement
 {

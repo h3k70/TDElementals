@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class StandartAttackState : IState
 {

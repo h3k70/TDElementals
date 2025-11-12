@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Minion : Character
 {
     protected override void OnStart()

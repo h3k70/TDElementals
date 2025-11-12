@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mirror;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
 
 public class SkillManager : NetworkBehaviour
 {

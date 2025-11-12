@@ -5,7 +5,6 @@ using DG.Tweening;
 using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Character : NetworkBehaviour, ISelectable, IDamageable, IDamageDealer, IHaveLVL, ITargetable
 {

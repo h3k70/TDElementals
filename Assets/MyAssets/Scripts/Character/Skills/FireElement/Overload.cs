@@ -1,5 +1,4 @@
 using System.Collections;
-using Mirror;
 using UnityEngine;
 
 namespace FireElement
