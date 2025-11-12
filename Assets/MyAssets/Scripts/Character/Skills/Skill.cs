@@ -30,7 +30,7 @@ public abstract class Skill : NetworkBehaviour
         }
     }
     public float Distence { get => _distence; }
-    public float Cooldown { get => _cooldown; protected set => _cooldown = value; }
+    public float Cooldown { get => _cooldown; set => _cooldown = value; }
 
     public event Action<Skill> CastStarted;
     public event Action<Skill> CastEnded;
@@ -54,6 +54,7 @@ public abstract class Skill : NetworkBehaviour
     public virtual bool TryCast(ITargetable target)
     {
         _target = target;
+
         if (_wrapperCastCoroutine == null && IsReady && IsTargetInRadius)
         {
             _isReady = false;

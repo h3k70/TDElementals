@@ -16,6 +16,7 @@ public class AASliceAttack : Skill
     public void AnimEventAASliceAttackEnded()
     {
         _isAnimPlaying = false;
+        TryCancel();
     }
 
     protected override IEnumerator CastJob(ITargetable target)

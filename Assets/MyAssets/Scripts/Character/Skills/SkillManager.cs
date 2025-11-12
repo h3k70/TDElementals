@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,6 +36,8 @@ public class SkillManager : NetworkBehaviour
 
         _currentSkill = AutoAtack;
         _autoAtack.Init(_character);
+        _autoAtack.Cooldown = 1 / _character.AttackRate;
+        _character.Animator.SetFloat("Attack Speed", 1 * _character.AttackRate);
 
         foreach (var skill in _allSkills)
         {

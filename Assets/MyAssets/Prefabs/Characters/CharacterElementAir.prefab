@@ -130,11 +130,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _damage
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _health
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _element
@@ -142,7 +142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _maxHealth
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _moveSpeed
@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _regenHpValue
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7661899267297425571, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: sceneId

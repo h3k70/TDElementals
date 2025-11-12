@@ -130,11 +130,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _damage
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _health
-      value: 180
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _element
@@ -142,19 +142,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _maxHealth
-      value: 180
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _moveSpeed
-      value: 0.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _attackRate
-      value: 1.2
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 7616692983691089583, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _regenHpValue
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7661899267297425571, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: sceneId
