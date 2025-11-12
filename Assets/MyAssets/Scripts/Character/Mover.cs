@@ -70,6 +70,7 @@ public class Mover
     {
         while (Vector3.Distance(target.position, _character.transform.position) > offset)
         {
+            _agent.speed = _character.MoveSpeed;
             _agent.SetDestination(target.position);
             yield return null;
         }
@@ -84,6 +85,7 @@ public class Mover
 
         while (Vector3.Distance(target, _character.transform.position) > offset)
         {
+            _agent.speed = _character.MoveSpeed;
             yield return null;
         }
         IsMove = false;

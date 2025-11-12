@@ -62,20 +62,28 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: c49eb79c795148a47af3a2b5d9571474, type: 2}
     - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _allSkills.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: '_allSkills.Array.data[0]'
       value: 
       objectReference: {fileID: 1809120891296236653}
     - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_allSkills.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6917130245869534891}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: _currentSkills.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: '_currentSkills.Array.data[0]'
       value: 
       objectReference: {fileID: 1809120891296236653}
+    - target: {fileID: 4391955469352361100, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      propertyPath: '_currentSkills.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6917130245869534891}
     - target: {fileID: 4771327744921155120, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -167,6 +175,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5455940782852663380, guid: 1a019261906010546a1b33a230e656a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1809120891296236653}
+    - targetCorrespondingSourceObject: {fileID: 5455940782852663380, guid: 1a019261906010546a1b33a230e656a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6917130245869534891}
   m_SourcePrefab: {fileID: 100100000, guid: 1a019261906010546a1b33a230e656a6, type: 3}
 --- !u!4 &5934207952174543060 stripped
 Transform:
@@ -195,10 +206,35 @@ MonoBehaviour:
   syncInterval: 0
   _name: 123
   _description: 123
-  _icon: {fileID: 642513862, guid: a6b2c8c63c23ba34e841d10961cfb5ce, type: 3}
+  _icon: {fileID: 21300000, guid: 0e3534ce804ad6f4aa903d796cca408f, type: 3}
   _distence: 7
   _cooldown: 9
   _damage: 20
+  _radius: 5
+  _damageReduction: 0.7
+--- !u!114 &6917130245869534891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7040855893105165635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858fce85a8d8b7f4798e5f2960c6a5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AirElement.ClearLight
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _name: 123
+  _description: 123
+  _icon: {fileID: 21300000, guid: 991dbb818dfe2cc46be5add0e6325b9a, type: 3}
+  _distence: 5
+  _cooldown: 16
+  _speedBuff: 1.5
+  _duration: 5
+  _radius: 6
 --- !u!1001 &7313698367944089985
 PrefabInstance:
   m_ObjectHideFlags: 0
