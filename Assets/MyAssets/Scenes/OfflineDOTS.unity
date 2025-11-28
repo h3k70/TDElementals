@@ -1961,6 +1961,7 @@ GameObject:
   - component: {fileID: 1279247742}
   - component: {fileID: 1279247741}
   - component: {fileID: 1279247740}
+  - component: {fileID: 1279247744}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2054,6 +2055,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1279247744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279247739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d914662cd9551fd40a60ca3735e3f021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConnectManagerUI
+  _gameScene: Assets/MyAssets/Scenes/GameNewMap.unity
+  _ipDropdown: {fileID: 1090719351}
+  _modeDropdown: {fileID: 1009839118}
+  _startButton: {fileID: 553210034}
 --- !u!1 &1330143461
 GameObject:
   m_ObjectHideFlags: 0
