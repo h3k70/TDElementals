@@ -20,14 +20,18 @@ public partial struct ClientRequestGameEntrySysyem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var requestGameEntry = SystemAPI.GetSingleton<GameEntryRequestData>();
         var entityCommandBuffer = new EntityCommandBuffer(Allocator.Temp);
         var pendingNetworkIds = _pendingNetworkIdQuery.ToEntityArray(Allocator.Temp);
 
         foreach (var pendingNetworkId in pendingNetworkIds)
         {
             entityCommandBuffer.AddComponent<NetworkStreamInGame>(pendingNetworkId);
+            var requestEnterInGameEntity = entityCommandBuffer.CreateEntity();
+            entityCommandBuffer.AddComponent(requestEnterInGameEntity, new EnterRpcRequest());
+            entityCommandBuffer.AddComponent(requestEnterInGameEntity, new SendRpcCommandRequest { TargetConnection = pendingNetworkId });
         }
+
+        entityCommandBuffer.Playback(state.EntityManager);
     }
 
     [BurstCompile]
