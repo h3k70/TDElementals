@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &1
 MonoBehaviour:
-  m_ObjectHideFlags: 61
+  m_ObjectHideFlags: 53
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15,7 +15,7 @@ MonoBehaviour:
   FilterSettings:
     ExcludedBakingSystemAssemblies: []
   AdditionalScriptingDefines: []
-  GlobalNetCodeConfig: {fileID: 11400000, guid: c9d6f0576b4f2814bb3e25069474616c, type: 2}
+  GlobalNetCodeConfig: {fileID: 0}
   CurrentImportanceSuggestions:
   - MinValue: 1
     MaxValue: 4
