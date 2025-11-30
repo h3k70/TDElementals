@@ -31,10 +31,4 @@ partial struct ServerProcessGameEntryRequestSysyem : ISystem
         }
         entityCommandBuffer.Playback(state.EntityManager);
     }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
-    }
 }
