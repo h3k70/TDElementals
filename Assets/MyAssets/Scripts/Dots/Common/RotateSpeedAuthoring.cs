@@ -14,7 +14,3 @@ public class RotateSpeedAuthoring : MonoBehaviour
         }
     }
 }
-public struct RotateSpeed : IComponentData
-{
-    public float rotateSpeed;
-}

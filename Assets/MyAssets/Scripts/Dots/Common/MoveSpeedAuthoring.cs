@@ -16,8 +16,3 @@ public class MoveSpeedAuthoring : MonoBehaviour
     }
 }
 
-
-public struct MoveSpeed : IComponentData
-{
-	public float moveSpeed;
-}
