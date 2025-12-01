@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Networking.Transport;
+using Unity.Splines.Examples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,8 +38,11 @@ public class ConnectManager
             using var networkDriverQuery = clientWorld.EntityManager.CreateEntityQuery(ComponentType.ReadWrite<NetworkStreamDriver>());
             networkDriverQuery.GetSingletonRW<NetworkStreamDriver>().ValueRW.Connect(clientWorld.EntityManager, connectionEndpoint);
         }
-
         World.DefaultGameObjectInjectionWorld = clientWorld;
+
+        var gameEnteryRequest = clientWorld.EntityManager.CreateEntity();
+        clientWorld.EntityManager.AddComponentData(gameEnteryRequest, new GameEntryRequestData());
+
     }
 
     private void DestroyLocalSimulationWorld()
